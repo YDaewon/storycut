@@ -3,18 +3,19 @@ import cv2
 import numpy as np
 from operator import itemgetter
 from mmaction.apis import init_recognizer, inference_recognizer
+import torch
 
 # 모델 설정 (초기화는 글로벌로 하여 성능 최적화)
 config_file = './src/mmaction2/configs/recognition/tsn/tsn_imagenet-pretrained-r50_8xb32-1x1x8-100e_kinetics400-rgb.py'
 checkpoint_file = './src/mmaction2/checkpoints/tsn_imagenet-pretrained-r50_8xb32-1x1x8-100e_kinetics400-rgb_20220906-2692d16c.pth'
 label_file = './src/mmaction2/tools/data/kinetics/label_map_k400.txt'
 
-model = init_recognizer(config_file, checkpoint_file, device='cuda:0')
-
 with open(label_file, 'r') as f:
     labels = [line.strip() for line in f]
 
 async def run_analysis_pipeline(video_path: str) -> list:
+    model = init_recognizer(config_file, checkpoint_file, device='cuda:0')
+
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -65,4 +66,6 @@ async def run_analysis_pipeline(video_path: str) -> list:
         os.remove(temp_video)
 
     cap.release()
+    del model  # 모델 객체 삭제
+    torch.cuda.empty_cache()  # GPU 메모리 해제
     return time_results
