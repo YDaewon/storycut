@@ -9,7 +9,7 @@ router = APIRouter()
 @router.get("/test_video_analysis")
 async def test_video_analysis():
     # 테스트할 로컬 영상 경로 지정
-    video_path = "C:/ssafy/AITest/문상훈유퀴즈.mp4"  # 여기 경로를 로컬의 실제 영상 파일로 변경
+    video_path = "app/videos/458f7a8f51b547028ddc1a9b4535881d.mp4"  # 여기 경로를 로컬의 실제 영상 파일로 변경
 
     if not os.path.isfile(video_path):
         return {"error": "영상 파일이 존재하지 않습니다.", "path": video_path}

@@ -5,7 +5,7 @@ from app.api.v1.services.mosaic_service import run_mosaic_pipeline
 from app.api.v1.services.subtitle_service import subtitles
 from app.api.v1.services.bgm_service import process_bgm_service  
 from app.api.v1.services.video_analysis import run_analysis_pipeline
-
+from app.api.v1.services.video_edit_service import select_time_ranges_by_prompt
 async def download_video_to_local(videoUrl: str, save_path: str):
     async with httpx.AsyncClient() as client:
         response = await client.get(videoUrl)
@@ -34,8 +34,10 @@ async def process_video_job(
         await download_video_to_local(video_info.result.video_url, video_path)
 
     print("영상 분석 중...")
-    analysis_results = await run_analysis_pipeline(video_path)
-    print(analysis_results)
+    if prompt:
+        new_video_path = await select_time_ranges_by_prompt(video_path=video_path,user_prompt=prompt)
+        os.remove(video_path)
+        video_path = new_video_path
 
     if images:
         new_video_path = await run_mosaic_pipeline(video_path, images, 5, 3)
