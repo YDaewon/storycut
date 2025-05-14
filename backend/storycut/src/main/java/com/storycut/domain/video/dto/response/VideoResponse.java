@@ -16,6 +16,7 @@ public class VideoResponse {
     private Long videoId;
     private Long memberId;
     private String videoName;
+    private String videoTitle;
     private String videoUrl;
     private String thumbnail;
     private Long originalVideoId;
@@ -28,6 +29,7 @@ public class VideoResponse {
                 .videoId(video.getId())
                 .memberId(video.getMemberId())
                 .videoName(video.getVideoName())
+                .videoTitle(video.getVideoTitle())
                 .videoUrl(video.getVideoUrl())
                 .thumbnail(video.getThumbnail())
                 .originalVideoId(video.getOriginalVideoId())
