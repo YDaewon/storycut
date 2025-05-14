@@ -82,7 +82,7 @@ public interface VideoAPI {
     /**
      * 내 비디오 목록 조회 API
      */
-    @GetMapping("/member")
+    @GetMapping
     @Operation(
         summary = "내 비디오 목록 조회",
         description = "회원이 업로드한 비디오 목록을 조회합니다.",
@@ -94,7 +94,8 @@ public interface VideoAPI {
         @ApiResponse(responseCode = "401", description = "인증이 필요합니다. (401)")
     })
     BaseResponse<List<VideoResponse>> getMyVideos(
-        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails authUser);
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails authUser
+        , @Parameter(description = "원본 비디오 여부", required = true) @RequestParam Boolean isOriginal);
 
     /**
      * 편집된 비디오 목록 조회 API

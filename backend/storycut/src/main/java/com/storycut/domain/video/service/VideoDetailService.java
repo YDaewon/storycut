@@ -26,8 +26,8 @@ public class VideoDetailService {
                 .orElseThrow(() -> new BusinessException(NOT_FOUND_VIDEO));
     }
 
-    public List<Video> findVideosByMemberId(Long memberId) {
-        return videoRepository.findByMemberId(memberId);
+    public List<Video> findVideosByMemberId(Long memberId, Boolean isOriginal) {
+        return videoRepository.findByMemberIdAndIsOriginal(memberId, isOriginal);
     }
 
     public List<Video> findVideosByOriginalVideoId(Long originalVideoId) {

@@ -48,7 +48,7 @@ public interface VideoService {
      * @param memberId 조회할 회원의 ID
      * @return 회원이 업로드한 비디오 목록
      */
-    List<VideoResponse> getMemberVideos(Long memberId);
+    List<VideoResponse> getMemberVideos(Long memberId, Boolean isOriginal);
     
     /**
      * 원본 비디오를 기반으로 한 편집 비디오 목록을 조회합니다.
