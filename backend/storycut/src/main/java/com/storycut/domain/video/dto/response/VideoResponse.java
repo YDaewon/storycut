@@ -1,5 +1,7 @@
 package com.storycut.domain.video.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.storycut.domain.video.entity.Video;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,9 +21,15 @@ public class VideoResponse {
     private String videoUrl;
     private String thumbnail;
     private Long originalVideoId;
+    @JsonProperty("isBlur")
     private boolean isBlur;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @JsonIgnore
+    public boolean isBlur() {
+        return isBlur;
+    }
     
     public static VideoResponse from(Video video) {
         return VideoResponse.builder()
