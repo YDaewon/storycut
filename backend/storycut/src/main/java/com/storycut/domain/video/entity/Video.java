@@ -20,9 +20,6 @@ public class Video extends BaseEntity {
     
     @Column(name = "member_id", nullable = false)
     private Long memberId;
-    
-    @Column(name = "video_name", nullable = false)
-    private String videoName;
 
     @Column(name = "video_title", nullable = false)
     private String videoTitle;
@@ -43,9 +40,8 @@ public class Video extends BaseEntity {
     private UploadStatus uploadStatus;
 
     @Builder
-    public Video(Long memberId, String videoName, String videoTitle, Long originalVideoId, Boolean isBlur) {
+    public Video(Long memberId, String videoTitle, Long originalVideoId, Boolean isBlur) {
         this.memberId = memberId;
-        this.videoName = videoName;
         this.videoTitle = videoTitle;
         this.originalVideoId = originalVideoId;
         this.isBlur = isBlur;
