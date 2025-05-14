@@ -1,7 +1,10 @@
 import os
+import json
 import firebase_admin
 from firebase_admin import credentials, messaging
-from app.api.v1.schemas.post_schema import PostResult
+from firebase_admin.exceptions import FirebaseError
+from fastapi import HTTPException
+from app.api.v1.schemas.post_schema import CompleteResponse, CompleteResult
 
 # ✅ 서비스 계정 JSON 경로
 SERVICE_ACCOUNT_PATH = "app/firebase/firebase-service-account.json"
@@ -13,7 +16,8 @@ except ValueError:
     cred = credentials.Certificate(SERVICE_ACCOUNT_PATH)
     firebase_admin.initialize_app(cred)
 
-# ✅ FCM 전송 함수 (HTTP v1 방식)
+
+# ✅ FCM 전송 함수
 def send_fcm_notification(token: str, title: str, body: str, data: dict = {}):
     message = messaging.Message(
         notification=messaging.Notification(
@@ -26,11 +30,52 @@ def send_fcm_notification(token: str, title: str, body: str, data: dict = {}):
     response = messaging.send(message)
     return response
 
-# ✅ PostResult 기반 전송 헬퍼
-def send_result_fcm(device_token: str, result: PostResult):
-    send_fcm_notification(
-        token=device_token,
-        title="📹 영상 업로드 완료",
-        body=f"'{result.video_name}' 영상이 성공적으로 업로드되었습니다.",
-        data=result.dict(by_alias=True)
-    )
+
+# ✅ 영상 처리 성공 시 전송 (result는 JSON 문자열로 감싸 전송)
+def send_result_fcm(device_token: str, response: CompleteResponse):
+    if response.result is None:
+        raise ValueError("result가 None이면 FCM 전송이 불가능합니다.")
+
+    try:
+        data = {
+            "isSuccess": str(response.is_success),
+            "code": str(response.code),
+            "message": response.message,
+            "result": json.dumps(response.result.dict(by_alias=True))  # ✅ JSON 문자열로
+        }
+
+        send_fcm_notification(
+            token=device_token,
+            title="📹 영상 업로드 완료",
+            body="영상 처리가 완료되었습니다.",
+            data=data
+        )
+    except FirebaseError as e:
+        send_failed_fcm(device_token, code=500, message="영상 처리 중 Firebase 오류 발생", error=e)
+        raise HTTPException(status_code=500, detail=f"FCM 전송 실패: {str(e)}")
+    except Exception as e:
+        send_failed_fcm(device_token, code=500, message="영상 처리 중 알 수 없는 오류 발생", error=e)
+        raise HTTPException(status_code=500, detail=f"예상치 못한 오류: {str(e)}")
+
+
+# ✅ 영상 처리 실패 시 전송 (오류 메시지 포함)
+def send_failed_fcm(device_token: str, code: int, message: str, error: Exception = None):
+    full_message = message
+    if error:
+        full_message += f" ({str(error)})"  # ✅ 에러 내용 추가
+
+    data = {
+        "isSuccess": "false",
+        "code": str(code),
+        "message": full_message
+    }
+
+    try:
+        send_fcm_notification(
+            token=device_token,
+            title="❌ 영상 처리 실패",
+            body=full_message,
+            data=data
+        )
+    except Exception as e:
+        print(f"[FCM 실패 메시지 전송 실패] {str(e)}")
