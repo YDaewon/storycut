@@ -1,5 +1,6 @@
 package com.storycut.domain.video.service;
 
+import com.storycut.domain.video.dto.request.UploadComplate;
 import com.storycut.domain.video.dto.request.VideoUploadRequest;
 import com.storycut.domain.video.dto.response.VideoResponse;
 
@@ -14,14 +15,23 @@ import java.util.List;
 public interface VideoService {
     
     /**
-     * 비디오를 업로드합니다.
-     * FastAPI에서 S3에 업로드한 후, Spring Boot에서 DB에 정보를 저장합니다.
+     * 비디오 업로드를 시작합니다.
+     * Spring Boot에서 DB에 정보 저장을 요청한 뒤, FastAPI에서 S3에 업로드합니다.
      * 
      * @param memberId 비디오를 업로드하는 회원의 ID
      * @param request 비디오 업로드에 필요한 정보를 담은 요청 객체
      * @return 업로드된 비디오 정보를 담은 응답 객체
      */
-    VideoResponse uploadVideo(Long memberId, VideoUploadRequest request);
+    Long uploadVideo(Long memberId, VideoUploadRequest request);
+
+    /**
+     * 비디오 업로드를 완료합니다.
+     * S3에 업로드가 끝나면, DB에 상태를 변경합니다.
+     *
+     * @param request 비디오 영상 링크 객체
+     * @return 업로드된 비디오 정보를 담은 응답 객체
+     */
+    VideoResponse completeUpload(UploadComplate request);
     
     /**
      * 비디오 정보를 조회합니다.

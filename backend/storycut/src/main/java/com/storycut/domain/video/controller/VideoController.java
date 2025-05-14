@@ -1,28 +1,35 @@
 package com.storycut.domain.video.controller;
 
 import com.storycut.domain.auth.model.CustomUserDetails;
+import com.storycut.domain.video.dto.request.UploadComplate;
 import com.storycut.domain.video.dto.request.VideoUploadRequest;
 import com.storycut.domain.video.dto.response.VideoResponse;
 import com.storycut.domain.video.service.VideoService;
 import com.storycut.global.model.dto.BaseResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/video")
 @RequiredArgsConstructor
 public class VideoController implements VideoAPI {
     
     private final VideoService videoService;
     
     @Override
-    public BaseResponse<VideoResponse> uploadVideo(CustomUserDetails authUser, VideoUploadRequest request) {
-        VideoResponse response = videoService.uploadVideo(authUser.getMemberId(), request);
-        return new BaseResponse<>(response);
+    public BaseResponse<Long> uploadVideo(CustomUserDetails authUser, VideoUploadRequest request) {
+        return new BaseResponse<>(videoService.uploadVideo(authUser.getMemberId(), request));
     }
-    
+
+    @Override
+    public BaseResponse<VideoResponse> completeUpload(UploadComplate request){
+        return new BaseResponse<>(videoService.completeUpload(request));
+    }
+
     @Override
     public BaseResponse<VideoResponse> getVideo(Long videoId) {
         VideoResponse response = videoService.getVideo(videoId);

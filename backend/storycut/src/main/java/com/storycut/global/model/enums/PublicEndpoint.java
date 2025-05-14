@@ -11,11 +11,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PublicEndpoint {
     // 인증 관련 경로
-    AUTH_LOGIN("/api/auth/login"),       // 로그인 API
-    AUTH_REFRESH("/api/auth/refresh"),   // 토큰 갱신 API
-    AUTH_WEB_LOGIN("/api/auth/web/login"), // 웹 로그인 리다이렉트
-    AUTH_TEST_LOGIN("/api/auth/test-login"), // 테스트 로그인
-    AUTH_OAUTH2_CALLBACK("/api/auth/oauth2/callback"), // OAuth2 콜백
+    AUTH_LOGIN("/auth/login"),       // 로그인 API
+    AUTH_REFRESH("/auth/refresh"),   // 토큰 갱신 API
+    AUTH_WEB_LOGIN("/auth/web/login"), // 웹 로그인 리다이렉트
+    AUTH_TEST_LOGIN("/auth/test-login"), // 테스트 로그인
+    AUTH_OAUTH2_CALLBACK("/auth/oauth2/callback"), // OAuth2 콜백
 
     // OAuth2 관련 경로
     OAUTH2("/oauth2/**"),
@@ -23,7 +23,7 @@ public enum PublicEndpoint {
     LOGIN_OAUTH2_CODE("/login/oauth2/code/**"),
 
     // 멤버 공개 API
-    MEMBER_PUBLIC("/api/member/public/**"),
+    MEMBER_PUBLIC("/api/v1/spring/member/public/**"),
 
     // 정적 리소스
     ROOT("/"),

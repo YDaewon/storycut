@@ -1,6 +1,7 @@
 package com.storycut.domain.video.controller;
 
 import com.storycut.domain.auth.model.CustomUserDetails;
+import com.storycut.domain.video.dto.request.UploadComplate;
 import com.storycut.domain.video.dto.request.VideoUploadRequest;
 import com.storycut.domain.video.dto.response.VideoResponse;
 import com.storycut.global.model.dto.BaseResponse;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * 비디오 관련 API 인터페이스
  */
-@RequestMapping("/api/video")
+@RequestMapping("/video")
 @Tag(name = "Video", description = "비디오 API")
 public interface VideoAPI {
 
@@ -31,7 +32,7 @@ public interface VideoAPI {
     @PostMapping
     @Operation(
         summary = "비디오 업로드",
-        description = "비디오 정보를 DB에 저장합니다. FastAPI에서 S3에 업로드한 후 호출해야 합니다.",
+        description = "비디오 정보를 DB에 저장합니다. FastAPI에서 S3에 업로드 시작 전 호출해야 합니다.",
         security = @SecurityRequirement(name = "JWT")
     )
     @ApiResponses(value = {
@@ -40,9 +41,26 @@ public interface VideoAPI {
         @ApiResponse(responseCode = "400", description = "비디오가 유효하지 않습니다. (3001)"),
         @ApiResponse(responseCode = "401", description = "인증이 필요합니다. (401)")
     })
-    BaseResponse<VideoResponse> uploadVideo(
+    BaseResponse<Long> uploadVideo(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails authUser,
         @Valid @RequestBody VideoUploadRequest request);
+
+    /**
+     * 비디오 업로드 API
+     */
+    @PatchMapping("/complete")
+    @Operation(
+        summary = "비디오 업로드 완료",
+        description = "업로드 완료를 DB에 업데이트합니다. FastAPI에서 S3에 업로드한 후 호출해야 합니다.",
+        security = @SecurityRequirement(name = "JWT")
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "요청에 성공하였습니다. (200)",
+            content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+        @ApiResponse(responseCode = "400", description = "비디오가 유효하지 않습니다. (3001)"),
+        @ApiResponse(responseCode = "401", description = "인증이 필요합니다. (401)")
+    })
+    BaseResponse<VideoResponse> completeUpload(@Valid @RequestBody UploadComplate request);
 
     /**
      * 비디오 상세 조회 API

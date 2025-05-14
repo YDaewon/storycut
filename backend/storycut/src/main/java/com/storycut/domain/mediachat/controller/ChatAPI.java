@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 채팅 API 인터페이스 - MCP(Model Context Protocol) 구현
  */
-@RequestMapping("/api/chat")
+@RequestMapping("/chat")
 @Tag(name = "Chat", description = "채팅 메시지 API")
 public interface ChatAPI {
 

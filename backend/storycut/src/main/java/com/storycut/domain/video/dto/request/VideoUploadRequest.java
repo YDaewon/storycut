@@ -15,12 +15,11 @@ public class VideoUploadRequest {
     @NotBlank(message = "파일 이름은 필수입니다.")
     @Size(max = 255, message = "파일 이름은 255자 이하여야 합니다.")
     private String videoName;
-    
-    @NotBlank(message = "비디오 URL은 필수입니다.")
-    private String videoUrl;
-    
-    private String thumbnail;
-    
+
+    @NotBlank(message = "비디오 제목은 필수입니다.")
+    @Size(max = 255, message = "비디오 제목은 255자 이하여야 합니다.")
+    private String videoTitle;
+
     private Long originalVideoId;
 
     private Boolean isBlur;
@@ -29,8 +28,7 @@ public class VideoUploadRequest {
         return Video.builder()
                 .memberId(memberId)
                 .videoName(videoName)
-                .videoUrl(videoUrl)
-                .thumbnail(thumbnail)
+                .videoTitle(videoTitle)
                 .originalVideoId(originalVideoId)
                 .isBlur(isBlur)
                 .build();

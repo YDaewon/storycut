@@ -23,8 +23,11 @@ public class Video extends BaseEntity {
     
     @Column(name = "video_name", nullable = false)
     private String videoName;
+
+    @Column(name = "video_title", nullable = false)
+    private String videoTitle;
     
-    @Column(name = "video_url", nullable = false)
+    @Column(name = "video_url")
     private String videoUrl;
     
     @Column(name = "thumbnail")
@@ -36,14 +39,22 @@ public class Video extends BaseEntity {
     @Column(name = "is_blur", nullable = false)
     private boolean isBlur;
 
+    @Enumerated(EnumType.STRING)
+    private UploadStatus uploadStatus;
+
     @Builder
-    public Video(Long memberId, String videoName, String videoUrl,
-                String thumbnail, Long originalVideoId, Boolean isBlur) {
+    public Video(Long memberId, String videoName, String videoTitle, Long originalVideoId, Boolean isBlur) {
         this.memberId = memberId;
         this.videoName = videoName;
-        this.videoUrl = videoUrl;
-        this.thumbnail = thumbnail;
+        this.videoTitle = videoTitle;
         this.originalVideoId = originalVideoId;
         this.isBlur = isBlur;
+        this.uploadStatus = UploadStatus.PROGRESS;
+    }
+
+    public void completeUpload(String videoUrl, String thumbnail) {
+        this.videoUrl = videoUrl;
+        this.thumbnail = thumbnail;
+        this.uploadStatus = UploadStatus.COMPLETE;
     }
 }

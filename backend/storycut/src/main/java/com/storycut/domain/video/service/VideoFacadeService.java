@@ -1,5 +1,6 @@
 package com.storycut.domain.video.service;
 
+import com.storycut.domain.video.dto.request.UploadComplate;
 import com.storycut.domain.video.dto.request.VideoUploadRequest;
 import com.storycut.domain.video.dto.response.VideoResponse;
 import com.storycut.domain.video.entity.Video;
@@ -21,15 +22,21 @@ public class VideoFacadeService implements VideoService {
     
     @Override
     @Transactional
-    public VideoResponse uploadVideo(Long memberId, VideoUploadRequest request) {
+    public Long uploadVideo(Long memberId, VideoUploadRequest request) {
         // 요청 DTO를 엔티티로 변환하여 비디오 저장
         Video video = request.toEntity(memberId);
         Video savedVideo = videoDetailService.saveVideo(video);
         
-        log.info("비디오가 업로드되었습니다. 비디오 ID: {}, 회원 ID: {}", savedVideo.getId(), memberId);
+        log.info("비디오가 업로드 시작. 비디오 ID: {}, 회원 ID: {}", savedVideo.getId(), memberId);
         
         // 응답 생성
-        return videoDetailService.mapToResponse(savedVideo);
+        return savedVideo.getId();
+    }
+
+    @Override
+    @Transactional
+    public VideoResponse completeUpload(UploadComplate request){
+        return videoDetailService.updateComplete(request);
     }
     
     @Override

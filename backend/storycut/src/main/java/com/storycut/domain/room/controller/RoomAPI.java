@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * 공유방 관련 API 인터페이스
  */
-@RequestMapping("/api/room")
+@RequestMapping("/room")
 @Tag(name = "Room", description = "공유방 API ")
 public interface RoomAPI {
 

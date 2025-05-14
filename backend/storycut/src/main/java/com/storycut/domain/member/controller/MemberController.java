@@ -4,51 +4,36 @@ import com.storycut.domain.member.model.dto.MemberDto;
 import com.storycut.domain.member.service.MemberService;
 import com.storycut.global.model.dto.BaseResponse;
 import com.storycut.domain.auth.model.CustomUserDetails;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/members")
 @RequiredArgsConstructor
-@Tag(name = "Member", description = "멤버 API")
-public class MemberController {
+public class MemberController implements MemberAPI {
 
     private final MemberService memberService;
 
-    // 회원 상세 정보 조회
-    @Operation(summary = "회원 정보 조회", description = "회원 정보를 조회합니다.")
-    @GetMapping("/detail")
-    public ResponseEntity<BaseResponse<MemberDto.Response>> getMyInfo(
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @Override
+    public ResponseEntity<BaseResponse<MemberDto.Response>> getMyInfo(CustomUserDetails userDetails) {
         Long memberId = userDetails.getMemberId();
         log.info("내 정보 요청 - 사용자 ID: {}, 이메일: {}", memberId, userDetails.getEmail());
         MemberDto.Response response = memberService.getMemberInfo(memberId);
         return ResponseEntity.ok(new BaseResponse<>(response));
     }
 
-    // 회원 정보 업데이트
-    @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")
-    @PatchMapping("/detail")
-    public ResponseEntity<BaseResponse<MemberDto.Response>> updateMyInfo(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody MemberDto.UpdateRequest updateRequest) {
+    @Override
+    public ResponseEntity<BaseResponse<MemberDto.Response>> updateMyInfo(CustomUserDetails userDetails, MemberDto.UpdateRequest updateRequest) {
         Long memberId = userDetails.getMemberId();
         log.info("내 정보 업데이트 요청 - 사용자 ID: {}, 닉네임: {}", memberId, updateRequest.getNickname());
         MemberDto.Response response = memberService.updateMember(memberId, updateRequest);
         return ResponseEntity.ok(new BaseResponse<>(response));
     }
 
-    // 계정 탈퇴
-    @Operation(summary = "회원 탈퇴", description = "회원을 탈퇴합니다.")
-    @DeleteMapping()
-    public ResponseEntity<BaseResponse<Void>> deleteMyAccount(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+    @Override
+    public ResponseEntity<BaseResponse<Void>> deleteMyAccount(CustomUserDetails userDetails) {
         Long memberId = userDetails.getMemberId();
         log.info("계정 탈퇴 요청 - 사용자 ID: {}, 이메일: {}", memberId, userDetails.getEmail());
         memberService.deleteMember(memberId);
