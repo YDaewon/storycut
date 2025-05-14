@@ -24,7 +24,7 @@ async def process_video_job(
 ) -> str:
 
     video_info = await get_video_from_springboot(video_id, token)
-    video_name = video_info.result.video_name
+    video_name = os.path.basename(video_info.result.video_url)  
     video_path = os.path.join("app/videos", video_name)
     new_video_path = None
     is_blur = False

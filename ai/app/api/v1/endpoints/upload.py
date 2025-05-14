@@ -1,8 +1,9 @@
 import os
-from fastapi import APIRouter, UploadFile, File, HTTPException, Header
+from fastapi import APIRouter, UploadFile, Form, File, Header
+from fastapi.responses import JSONResponse
 from typing import List
 
-# 비동기 서비스 로직 불러오기
+# 서비스 로직
 from app.api.v1.services.upload_service import (
     save_uploaded_images,
     save_uploaded_video_local,
@@ -10,20 +11,26 @@ from app.api.v1.services.upload_service import (
     generate_and_upload_thumbnail,
     save_uploaded_image
 )
-from app.api.v1.services.springboot_service import post_video_to_springboot
+from app.api.v1.services.springboot_service import (
+    post_video_to_springboot_upload,
+    post_video_to_springboot_complete
+)
+
+# 스키마
 from app.api.v1.schemas.upload_schema import (
     ImageUploadResponse, ErrorResponse,
-    ImageUploadResult,VideoUploadResponse,
-    ImageUploadResponse,RoomThumbnailResponse,
-    RoomThumbnailResult
+    ImageUploadResult, VideoUploadResponse,
+    RoomThumbnailResponse, RoomThumbnailResult
 )
-from app.api.v1.schemas.post_schema import PostRequest
-
+from app.api.v1.schemas.post_schema import CompleteRequest, UploadRequest
 router = APIRouter()
+
+
+# ✅ 이미지 업로드
 @router.post(
     "/images",
     response_model=ImageUploadResponse,
-    responses={400: {"model": ErrorResponse, "description": "이미지 업로드 실패"}},
+    responses={400: {"model": ErrorResponse, "description": "이미지 요청이 잘못되었습니다."}},
     summary="이미지 업로드"
 )
 async def upload_images(files: List[UploadFile] = File(...)):
@@ -36,31 +43,51 @@ async def upload_images(files: List[UploadFile] = File(...)):
             result=ImageUploadResult(image_urls=image_urls)
         )
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"이미지 업로드 실패: {str(e)}")
+        return JSONResponse(
+            status_code=400,
+            content=ErrorResponse(
+                code=400,
+                message=f"이미지 요청이 잘못되었습니다. {str(e)}",
+                result=None
+            ).dict(by_alias=True)
+        )
 
 
-@router.post("/videos", response_model=VideoUploadResponse, summary="영상 업로드")
+# ✅ 영상 업로드
+@router.post(
+    "/videos",
+    response_model=VideoUploadResponse,
+    responses={400: {"model": ErrorResponse, "description": "영상 업로드 실패"}},
+    summary="영상 업로드"
+)
 async def upload_video(
     file: UploadFile = File(...),
+    video_title: str = Form(...),
     authorization: str = Header(..., alias="Authorization")
 ):
     token = authorization.replace("Bearer ", "")
-
     try:
-
         local_path = await save_uploaded_video_local(file)
         video_name = os.path.basename(local_path)
+
         thumbnail_url = await generate_and_upload_thumbnail(local_path)
         s3_url = await save_uploaded_video(local_path, video_name)
 
-        payload = PostRequest(
-            video_name=video_name,
-            video_url=s3_url,
-            thumbnail=thumbnail_url,
+        payload = UploadRequest(
+            video_title=video_title,
             original_video_id=None,
-            is_blur=False
+            is_blur=False,
         )
-        spring_response = await post_video_to_springboot(token, payload)
+
+        id = await post_video_to_springboot_upload(token, payload)
+
+        payload = CompleteRequest(
+            video_id=id.result,
+            thumbnail=thumbnail_url,
+            video_url=s3_url,
+        )
+
+        spring_response = await post_video_to_springboot_complete(token, payload)
 
         return VideoUploadResponse(
             is_success=True,
@@ -70,8 +97,17 @@ async def upload_video(
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return JSONResponse(
+            status_code=400,
+            content=ErrorResponse(
+                code=400,
+                message=f"영상이 업로드가 잘못되었습니다. ({str(e)})",
+                result=None
+            ).dict(by_alias=True)
+        )
 
+
+# ✅ 룸 썸네일 이미지 업로드
 @router.post(
     "/room-thumbnails",
     response_model=RoomThumbnailResponse,
@@ -88,4 +124,11 @@ async def upload_room_thumbnail(file: UploadFile = File(...)):
             result=RoomThumbnailResult(url=uploaded_url)
         )
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"룸 썸네일 업로드 실패: {str(e)}")
+        return JSONResponse(
+            status_code=400,
+            content=ErrorResponse(
+                code=400,
+                message=f"룸 썸네일 업로드 실패: {str(e)}",
+                result=None
+            ).dict(by_alias=True)
+        )
