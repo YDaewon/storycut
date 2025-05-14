@@ -2,7 +2,7 @@ import httpx
 from app.api.v1.schemas.post_schema import PostRequest, PostResponse
 
 SPRINGBOOT_API_URL = "https://k12d108.p.ssafy.io/api/v1/spring/api/video"  # 실제 주소로 교체
-
+# SPRINGBOOT_API_URL = "http://localhost:8080/api/video"  # 실제 주소로 교체
 async def post_video_to_springboot(
     token: str,
     payload: PostRequest

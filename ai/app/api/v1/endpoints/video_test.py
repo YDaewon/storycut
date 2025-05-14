@@ -1,7 +1,8 @@
 # app/api/v1/endpoints/video_test.py
 
-from fastapi import APIRouter
+from fastapi import APIRouter,Header,HTTPException
 from app.api.v1.services.video_analysis import run_analysis_pipeline
+from app.core.fcm import send_fcm_notification
 import os
 
 router = APIRouter()
@@ -25,3 +26,17 @@ async def test_video_analysis():
             print(f"  - {label:<25} {score:.4f}")
 
     return {"message": "영상 분석이 완료되었습니다.", "results": results}
+
+
+@router.post("/test_fcm")
+async def test_fcm(device_token: str = Header(...)):
+    try:
+        send_fcm_notification(
+            token=device_token,
+            title="🎉 분석 완료",
+            body="응답!!!!",
+            data={"status": "done", "source": "test_video_analysis"}
+        )
+        return {"message": "FCM 전송 성공"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"FCM 전송 실패: {str(e)}")

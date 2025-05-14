@@ -49,3 +49,5 @@ pytest_cache/
 .mypy_cache/
 .ipynb_checkpoints/
 docs/_build/
+app/firebase/*
+!app/firebase/.gitkeep
