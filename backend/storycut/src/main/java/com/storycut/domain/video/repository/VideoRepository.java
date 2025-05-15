@@ -15,6 +15,7 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     @Query("""
         SELECT v FROM Video v
         WHERE v.memberId = :memberId
+        AND v.uploadStatus = 'COMPLETED'
         AND (
             (:isOriginal = true AND v.originalVideoId IS NULL)
             OR

@@ -72,6 +72,23 @@ public interface ChatAPI {
             @Parameter(description = "페이지 크기") @RequestParam(defaultValue = "10") int size);
 
     /**
+     * 채팅 메시지 목록 조회 API (페이징)
+     */
+    @Operation(
+        summary = "공유방 비디오 상세 조회",
+        description = "특정 방의 공유된 비디오 메시지를 조회합니다.",
+        security = @SecurityRequirement(name = "JWT")
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "요청에 성공하였습니다. (200)",
+            content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+        @ApiResponse(responseCode = "404", description = "해당 메시지가 존재하지 않습니다. (5000)")
+    })
+    @GetMapping("/detail/{chatId}")
+    ResponseEntity<BaseResponse<ChatMessageResponse>> getMessage(
+        @Parameter(description = "조회할 메시지 ID", required = true) @PathVariable Long chatId);
+
+    /**
      * 단일 채팅 메시지 삭제 API
      */
     @Operation(

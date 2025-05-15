@@ -36,6 +36,14 @@ public interface ChatService {
     List<ChatMessageResponse> getChatMessages(Long roomId, int page, int size);
 
     /**
+     * Room의 채팅 메시지를 조회합니다.
+     *
+     * @param chatId 채팅 ID
+     * @return 채팅 메시지 페이지
+     */
+    ChatMessageResponse getChatMessage(Long chatId);
+
+    /**
      * 특정 시간 이후의 채팅 메시지를 조회합니다.
      * 실시간 채팅에서 새로운 메시지만 가져올 때 사용할 수 있습니다.
      *

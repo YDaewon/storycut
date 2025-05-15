@@ -28,6 +28,15 @@ public class ChatMessageService {
 
     private final ChatMessageRepository chatMessageRepository;
 
+    public ChatMessageResponse getById(Long chatId) {
+        // 채팅 메시지 조회
+        Optional<ChatMessage> messageOpt = chatMessageRepository.findById(chatId.toString());
+        if (messageOpt.isEmpty()) {
+            throw new BusinessException(BaseResponseStatus.NOT_FOUND_MESSAGE);
+        }
+        return ChatMessageResponse.from(messageOpt.get());
+    }
+
     @Transactional(readOnly = true)
     public List<ChatMessageResponse> getAllByRoomId(Long roomId) {
         // 채팅 메시지 조회 (삭제되지 않은 메시지만)

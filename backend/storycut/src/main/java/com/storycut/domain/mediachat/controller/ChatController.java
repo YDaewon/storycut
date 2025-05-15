@@ -46,6 +46,15 @@ public class ChatController implements ChatAPI {
     }
 
     /**
+     * 단일 채팅 메시지 조회 API
+     */
+    @Override
+    public ResponseEntity<BaseResponse<ChatMessageResponse>> getMessage(Long chatId) {
+        ChatMessageResponse response = chatService.getChatMessage(chatId);
+        return ResponseEntity.ok(new BaseResponse<>(response));
+    }
+
+    /**
      * 단일 채팅 메시지 삭제 API
      */
     @Override

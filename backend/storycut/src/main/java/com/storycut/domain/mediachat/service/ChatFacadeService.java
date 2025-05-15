@@ -50,6 +50,16 @@ public class ChatFacadeService implements ChatService {
     }
 
     @Override
+    public ChatMessageResponse getChatMessage(Long chatId){
+        // 메시지 존재 여부 확인
+        ChatMessageResponse message = chatMessageService.getById(chatId);
+        if (message == null) {
+            throw new BusinessException(BaseResponseStatus.NOT_FOUND_MESSAGE);
+        }
+        return message;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<ChatMessageResponse> getMessagesAfter(Long roomId, LocalDateTime timestamp) {
         // Room 존재 확인
