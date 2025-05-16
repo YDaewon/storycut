@@ -9,6 +9,10 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from uuid import uuid4
 from typing import List
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 UPLOAD_DIR = "app/videos"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -18,7 +22,7 @@ _face_model = None
 def get_face_model():
     global _face_model
     if _face_model is None:
-        print("🔄 InsightFace 모델 초기화 중...")
+        logger.info("🔄 InsightFace 모델 초기화 중...")
         _face_model = insightface.app.FaceAnalysis(providers=["CUDAExecutionProvider"])
         _face_model.prepare(ctx_id=0)
     return _face_model
@@ -29,7 +33,7 @@ def release_face_model():
         del _face_model
         _face_model = None
         torch.cuda.empty_cache()
-        print("🔄 InsightFace 모델 해제 완료")
+        logger.info("🔄 InsightFace 모델 해제 완료")
 
 def detect_faces(frame):
     face_model = get_face_model()
@@ -132,58 +136,58 @@ def process_video_segment(input_path, target_embeddings, output_path, start_fram
 
         cap.release()
         out.release()
+        logger.info(f"✅ 세그먼트 처리 완료: {output_path}")
     except Exception as e:
-        print(f"세그먼트 처리 오류: {e}")
+        logger.exception(f" 세그먼트 처리 오류: {e}")
 
 def merge_video_segments(output_path, segment_paths):
     with open("segments.txt", "w") as f:
         for path in segment_paths:
             f.write(f"file '{path}'\n")
-    subprocess.run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", "segments.txt", "-c", "copy", output_path], check=True)
-    os.remove("segments.txt")
+    try:
+        subprocess.run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", "segments.txt", "-c", "copy", output_path], check=True)
+        logger.info(f"✅ 비디오 병합 완료: {output_path}")
+    except subprocess.CalledProcessError as e:
+        logger.exception(f" 병합 실패: {e}")
+        raise
+    finally:
+        os.remove("segments.txt")
 
 def add_audio_to_video(video_no_audio_path, original_video_path, output_path):
-    result = subprocess.run(
-        ["ffprobe", "-v", "error", "-select_streams", "a", "-show_entries",
-         "stream=index", "-of", "csv=p=0", original_video_path],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
-    )
+    result = subprocess.run([
+        "ffprobe", "-v", "error", "-select_streams", "a", "-show_entries",
+        "stream=index", "-of", "csv=p=0", original_video_path
+    ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     has_audio = result.stdout.strip() != ""
-    if has_audio:
-        subprocess.run([
-            "ffmpeg", "-y",
-            "-i", video_no_audio_path,
-            "-i", original_video_path,
-            "-c", "copy",
-            "-map", "0:v:0", "-map", "1:a:0",
-            "-shortest", output_path
-        ], check=True)
+    cmd = [
+        "ffmpeg", "-y", "-i", video_no_audio_path, "-i", original_video_path,
+        "-c", "copy", "-map", "0:v:0", "-map", "1:a:0", "-shortest", output_path
+    ] if has_audio else [
+        "ffmpeg", "-y", "-i", video_no_audio_path, "-c", "copy", output_path
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        logger.error(f" 오디오 추가 실패: {result.stderr}")
+        raise RuntimeError(f"오디오 추가 실패: {result.stderr}")
     else:
-        subprocess.run([
-            "ffmpeg", "-y",
-            "-i", video_no_audio_path,
-            "-c", "copy",
-            output_path
-        ], check=True)
+        logger.info(f" 오디오 추가 완료: {output_path}")
 
 def gpu_encode_video(input_path: str, output_path: str, bitrate="10M", preset="fast"):
     cmd = [
-        "ffmpeg", "-y",
-        "-i", input_path,
-        "-c:v", "h264_nvenc",
-        "-preset", preset,
-        "-b:v", bitrate,
-        output_path
+        "ffmpeg", "-y", "-i", input_path, "-c:v", "h264_nvenc",
+        "-preset", preset, "-b:v", bitrate, output_path
     ]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
+        logger.error(f"❌ 인코딩 실패: {result.stderr}")
         raise RuntimeError(f"인코딩 실패: {result.stderr}")
-
+    else:
+        logger.info(f" GPU 인코딩 성공: {output_path}")
 
 def split_frames(total_frames, num_segments):
     step = total_frames // num_segments
     return [(i * step, total_frames if i == num_segments - 1 else (i + 1) * step) for i in range(num_segments)]
-
 
 async def run_mosaic_pipeline(input_path: str, target_paths: List[str], detect_interval: int = 5, num_segments: int = 3) -> str:
     loop = asyncio.get_event_loop()
@@ -217,11 +221,10 @@ async def run_mosaic_pipeline(input_path: str, target_paths: List[str], detect_i
     await loop.run_in_executor(executor, add_audio_to_video, merged_output, input_path, final_output)
     await loop.run_in_executor(executor, gpu_encode_video, final_output, encoded_output)
 
-    # 🔻 중간 파일 정리
     for path in segment_paths + [merged_output, final_output]:
         if os.path.exists(path):
             os.remove(path)
-    
+
     for path in target_paths[:2]:
         if os.path.exists(path):
             os.remove(path)
