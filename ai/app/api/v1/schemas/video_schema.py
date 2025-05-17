@@ -9,7 +9,7 @@ class VideoProcessRequest(BaseModel):
     video_title: str = Field(..., alias="videoTitle")
     subtitle: bool
     music_prompt:str=Field(..., alias="musicPrompt")
-
+    auto_music: bool=Field(..., alias="autoMusic")
     class Config:
         allow_population_by_field_name = True
         
@@ -22,7 +22,8 @@ class VideoProcessRequest(BaseModel):
                 ],
                 "videoTitle":"제목",
                 "subtitle":True,
-                "musicPrompt":"댄스음악"
+                "musicPrompt":"댄스음악",
+                "autoMusic":True
            }
         }
 

@@ -6,9 +6,7 @@ from firebase_admin import credentials, messaging
 from firebase_admin.exceptions import FirebaseError
 from fastapi import HTTPException
 from app.api.v1.schemas.post_schema import CompleteResponse, CompleteResult
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+from app.core.logger import logger
 
 # 서비스 계정 JSON 경로
 SERVICE_ACCOUNT_PATH = os.getenv("SERVICE_ACCOUNT_PATH")

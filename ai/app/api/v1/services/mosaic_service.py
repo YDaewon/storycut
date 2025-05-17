@@ -9,10 +9,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from uuid import uuid4
 from typing import List
-import logging
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+from app.core.logger import logger
 
 UPLOAD_DIR = "app/videos"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -22,7 +19,7 @@ _face_model = None
 def get_face_model():
     global _face_model
     if _face_model is None:
-        logger.info("🔄 InsightFace 모델 초기화 중...")
+        logger.info("[모델 초기화] InsightFace 모델 초기화 중...")
         _face_model = insightface.app.FaceAnalysis(providers=["CUDAExecutionProvider"])
         _face_model.prepare(ctx_id=0)
     return _face_model
@@ -33,7 +30,7 @@ def release_face_model():
         del _face_model
         _face_model = None
         torch.cuda.empty_cache()
-        logger.info("🔄 InsightFace 모델 해제 완료")
+        logger.info("[모델 해제] InsightFace 모델 해제 완료")
 
 def detect_faces(frame):
     face_model = get_face_model()
@@ -136,9 +133,9 @@ def process_video_segment(input_path, target_embeddings, output_path, start_fram
 
         cap.release()
         out.release()
-        logger.info(f"✅ 세그먼트 처리 완료: {output_path}")
-    except Exception as e:
-        logger.exception(f" 세그먼트 처리 오류: {e}")
+        logger.info("[세그먼트 처리] 완료: %s", output_path)
+    except Exception:
+        logger.exception("[세그먼트 처리] 예외 발생")
 
 def merge_video_segments(output_path, segment_paths):
     with open("segments.txt", "w") as f:
@@ -146,9 +143,9 @@ def merge_video_segments(output_path, segment_paths):
             f.write(f"file '{path}'\n")
     try:
         subprocess.run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", "segments.txt", "-c", "copy", output_path], check=True)
-        logger.info(f"✅ 비디오 병합 완료: {output_path}")
-    except subprocess.CalledProcessError as e:
-        logger.exception(f" 병합 실패: {e}")
+        logger.info("[병합] 비디오 병합 완료: %s", output_path)
+    except subprocess.CalledProcessError:
+        logger.exception("[병합] 실패")
         raise
     finally:
         os.remove("segments.txt")
@@ -168,10 +165,10 @@ def add_audio_to_video(video_no_audio_path, original_video_path, output_path):
 
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
-        logger.error(f" 오디오 추가 실패: {result.stderr}")
+        logger.error("[오디오 추가] 실패: %s", result.stderr.strip())
         raise RuntimeError(f"오디오 추가 실패: {result.stderr}")
     else:
-        logger.info(f" 오디오 추가 완료: {output_path}")
+        logger.info("[오디오 추가] 완료: %s", output_path)
 
 def gpu_encode_video(input_path: str, output_path: str, bitrate="10M", preset="fast"):
     cmd = [
@@ -180,10 +177,10 @@ def gpu_encode_video(input_path: str, output_path: str, bitrate="10M", preset="f
     ]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
-        logger.error(f"❌ 인코딩 실패: {result.stderr}")
+        logger.error("[GPU 인코딩] 실패: %s", result.stderr.strip())
         raise RuntimeError(f"인코딩 실패: {result.stderr}")
     else:
-        logger.info(f" GPU 인코딩 성공: {output_path}")
+        logger.info("[GPU 인코딩] 완료: %s", output_path)
 
 def split_frames(total_frames, num_segments):
     step = total_frames // num_segments

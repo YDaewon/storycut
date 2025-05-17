@@ -14,16 +14,31 @@ import soundfile as sf
 import requests
 import re
 import asyncio
-import logging
-
-# === 로거 설정 ===
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
+from app.core.logger import logger
+from collections import defaultdict
+from typing import List, Tuple, Union
 UPLOAD_DIR = "app/videos"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 loop = asyncio.get_event_loop()
+
+
+def extract_top5_labels(
+    actions_data: List[Tuple[Tuple[float, float], List[Tuple[str, float]]]]
+) -> List[str]:
+    label_scores = defaultdict(list)
+
+    for _, actions in actions_data:
+        for label, score in actions:
+            label_scores[label].append(score)
+
+    # 평균 신뢰도 기준 Top 5 추출
+    top5 = sorted(
+        ((label, sum(scores) / len(scores)) for label, scores in label_scores.items()),
+        key=lambda x: x[1], reverse=True
+    )[:5]
+
+    return [label for label, _ in top5]
 
 def blend_audio_segments(seg1, seg2, overlap_len):
     min_overlap = min(overlap_len, len(seg1), len(seg2))
@@ -62,11 +77,11 @@ async def generate_bgm(prompt, segment_duration=20, total_duration=60, device='c
         dbfs = 20 * np.log10(rms) if rms > 0 else -100
 
         if dbfs < -35 and dbfs > -100:
-            logger.info(f" 구간 볼륨이 작음({dbfs:.2f}dB), 10dB 증폭")
+            logger.info(f"[볼륨 조정] 구간 볼륨: {dbfs:.2f} dB → 10dB 증폭")
             audio *= 10 ** (10 / 20)
             audio = np.clip(audio, -1.0, 1.0)
         elif dbfs <= -80:
-            logger.info(f"구간 볼륨이 너무 작음({dbfs:.2f}dB), 건너뜀")
+            logger.info(f"[볼륨 조정] 구간 볼륨 매우 낮음: {dbfs:.2f} dB → 생략")
             continue
 
         generated_audio = audio if generated_audio is None else blend_audio_segments(generated_audio, audio, overlap_samples)
@@ -123,7 +138,7 @@ async def detect_voice_regions(wav_path, frame_duration=30):
         return regions
 
     regions = await loop.run_in_executor(None, _inner)
-    logger.info("감지된 음성 구간: %s", regions)
+    # logger.info("[음성 감지 완료] 총 %d개 구간: %s", len(regions), regions)
     return merge_regions(regions)
 
 def merge_regions(regions, merge_threshold=0.2, min_region_length=0.4):
@@ -164,7 +179,7 @@ async def adjust_bgm_dynamic(bgm_path, voice_path, voice_regions, total_duration
             voice_chunk = voice_audio[int(start * 1000):int(end * 1000)]
             voice_db = voice_chunk.dBFS if voice_chunk.dBFS != float('-inf') else -40
             bgm_gain = -max(15, voice_db + 35)
-            logger.info(f"voice_db: {voice_db}, bgm_gain: {bgm_gain}, 구간: {start}-{end}")
+            # logger.info("[BGM 조정] 구간 %.2fs~%.2fs | 음성 dB: %.2f | 적용 볼륨: %.2f dB",start, end, voice_db, bgm_gain)
             chunk = bgm[int(start * 1000):int(end * 1000)]
             output += apply_gain_with_fade(chunk, bgm_gain, fade_ms)
 
@@ -205,40 +220,49 @@ async def has_audio_stream(video_path: str) -> bool:
     result = await loop.run_in_executor(None, functools.partial(subprocess.run, cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True))
     return bool(result.stdout.strip())
 
-async def process_bgm_service(video_path: str, prompt: str):
-    def gemini_translate_ko_to_en(prompt_ko):
+async def process_bgm_service(video_path: str,  prompt: Union[str, List[Tuple[Tuple[float, float], List[Tuple[str, float]]]]]):
+    def gemini_translate_ko_to_en(prompt):
         api_key = os.getenv("GEMINI_API_KEY")
         url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key={api_key}"
         headers = {"Content-Type": "application/json"}
 
+        if isinstance(prompt, str):
+            prompt=f"""Generate a one-sentence English prompt for MusicGen based on the following description:
+                - The music is background music (BGM) for a video.
+                - Describe the mood, genre, instruments (avoid electronic instruments), tempo, and energy in detail.
+                - Use acoustic instruments like drums, guitar, piano, bass, or orchestral elements.
+                Input description: "{prompt}"
+                """
+        else:
+            top5 = extract_top5_labels(prompt)
+
+            prompt = f"""Based on the following actions, please answer the questions in English:
+
+            These are the top {len(top5)} most frequently detected human actions in the video: {', '.join(top5)}
+
+            1. What is the most likely topic or theme of this video? (Answer in one clear English sentence.)
+
+            2. Then, using the prompt template below, generate a one-sentence English prompt for MusicGen that matches the topic of the video:
+
+            Generate a one-sentence English prompt for MusicGen based on the following description:
+            - The music is background music (BGM) for a video.
+            - Describe the mood, genre, instruments (avoid electronic instruments), tempo, and energy in detail.
+            - Use acoustic instruments like drums, guitar, piano, bass, or orchestral elements.
+            Input description: "<Insert the sentence from question 1 here>"
+            """
         data = {
             "contents": [
                 {
                     "role": "user",
                     "parts": [
                         {
-                            "text": (
-                            #     f"""다음 문장을 기반으로 MusicGen에 사용할 프롬프트를 영어로 1문장 생성해줘.
-                            # - 이 음악은 영상의 배경음악(BGM)으로 사용돼.
-                            # - 분위기, 장르, 사용하는 악기, 속도(tempo), 에너지 수준 등을 최대한 구체적으로 묘사해줘.
-                            # - 전자음악 스타일은 피하고, 드럼, 기타, 베이스 ,피아노 등 다양한 악기를 이용해해
-                            # 문장: "{prompt_ko}"
-                            # """
-                                f"""Generate a one-sentence English prompt for MusicGen based on the following description:
-                                - The music is background music (BGM) for a video.
-                                - Describe the mood, genre, instruments (avoid electronic instruments), tempo, and energy in detail.
-                                - Use acoustic instruments like drums, guitar, piano, bass, or orchestral elements.
-
-                                Input description: "{prompt_ko}"
-                                """
-                            )
-
+                            "text": prompt
                         }
                     ]
                 }
             ]
         }
-
+    
         response = requests.post(url, headers=headers, json=data)
         if response.status_code == 200:
             try:
@@ -251,10 +275,10 @@ async def process_bgm_service(video_path: str, prompt: str):
                           .strip()
                 )
             except Exception:
-                logger.warning("응답 파싱 실패: %s", result)
+                logger.exception("[Gemini 응답 파싱 실패]")
                 return ""
         else:
-            logger.error(" Gemini API 오류: %s", response.text)
+            logger.error("[Gemini API 오류] 상태코드: %d | 응답 내용: %s", response.status_code, response.text.strip())
             return ""
 
     prompt = await loop.run_in_executor(None, functools.partial(gemini_translate_ko_to_en, prompt))
@@ -271,7 +295,7 @@ async def process_bgm_service(video_path: str, prompt: str):
     bgm_path = await generate_bgm(prompt, total_duration=duration)
 
     if await has_audio_stream(video_path):
-        logger.info("오디오 있음 - 음성 추출 및 믹싱 시작")
+        logger.info("[오디오 감지] 음성 추출 및 BGM 믹싱 시작")
         await extract_audio(video_path, voice_path)
         regions = await detect_voice_regions(voice_path)
         if regions:
@@ -288,8 +312,8 @@ async def process_bgm_service(video_path: str, prompt: str):
                 except Exception as e:
                     logger.warning(f"파일 삭제 실패: {path} ({e})")
     else:
-        logger.info("오디오 없음 - BGM 단독 삽입")
-        logger.info(f"ffmpeg 명령 실행: {video_path} + {bgm_path} -> {output_path}")
+        logger.info("[오디오 없음] 배경음악 단독 삽입 진행")
+        logger.info("[FFmpeg 실행] 입력: %s + %s → 출력: %s", video_path, bgm_path, output_path)
         await loop.run_in_executor(None, functools.partial(subprocess.run, [
             "ffmpeg", "-y", "-i", video_path, "-i", bgm_path,
             "-c:v", "copy", "-c:a", "aac", "-shortest", output_path
@@ -299,7 +323,7 @@ async def process_bgm_service(video_path: str, prompt: str):
             try:
                 os.remove(bgm_path)
             except Exception as e:
-                logger.warning(f"파일 삭제 실패: {bgm_path} ({e})")
+                logger.warning("[파일 삭제 실패] 경로: %s | 오류: %s", bgm_path, str(e))
 
-    logger.info(f"최종 결과 저장 완료: {output_path}")
+    logger.info("[처리 완료] 최종 결과 파일 저장: %s", output_path)
     return output_path

@@ -3,6 +3,7 @@
 from fastapi import APIRouter,Header,HTTPException
 from app.api.v1.services.video_analysis import run_analysis_pipeline
 from app.core.fcm import send_fcm_notification
+from app.api.v1.services.bgm_service import process_bgm_service
 import os
 
 router = APIRouter()
@@ -24,19 +25,18 @@ async def test_video_analysis():
         print(f"{start:.1f}-{end:.1f}s:")
         for label, score in preds:
             print(f"  - {label:<25} {score:.4f}")
-
+    results = await run_analysis_pipeline(video_path)
+    
     return {"message": "영상 분석이 완료되었습니다.", "results": results}
 
 
 @router.post("/test_fcm")
-async def test_fcm(device_token: str = Header(...)):
+async def test_fcm():
     try:
-        send_fcm_notification(
-            token=device_token,
-            title="🎉 분석 완료",
-            body="응답!!!!",
-            data={"status": "done", "source": "test_video_analysis"}
-        )
-        return {"message": "FCM 전송 성공"}
+        video_path = "C:/Users/SSAFY/Desktop/cs/app/uploads/subtitled.mp4" 
+        raw_data=await run_analysis_pipeline(video_path)
+        new_video_path = await process_bgm_service(video_path, raw_data)
+
+        return {"message": new_video_path}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"FCM 전송 실패: {str(e)}")
