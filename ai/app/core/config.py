@@ -10,15 +10,13 @@ load_dotenv(dotenv_path=ENV_PATH)
 class Settings:
     """
     🔧 .env 파일 기반 설정 클래스
-    AWS, DB 등 프로젝트 전역 환경 변수들을 여기에서 관리
+    Azure Blob Storage 등 전역 환경 변수들을 관리
     """
 
     def __init__(self):
-        # ☁️ AWS S3 설정
-        self.AWS_REGION = os.getenv("AWS_REGION", "ap-northeast-2")
-        self.S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME", "my-shortcut-bucket")
-        self.AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-        self.AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-
+        # Azure Blob Storage 설정 (Connection String 없이)
+        self.AZURE_STORAGE_ACCOUNT_NAME = os.getenv("AZURE_STORAGE_ACCOUNT_NAME")
+        self.AZURE_STORAGE_ACCOUNT_KEY = os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
+        self.AZURE_CONTAINER_NAME = os.getenv("AZURE_CONTAINER_NAME", "my-container")
 
 settings = Settings()
