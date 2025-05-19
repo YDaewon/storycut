@@ -359,7 +359,15 @@ fun EditScreen(
                         OutlinedTextField(
                             value = viewModel.musicPromptText,
                             onValueChange = { viewModel.updateMusicPromptText(it) },
-                            placeholder = { Text("음악 분위기를 설명해주세요 (예: 신나는, 슬픈, 로맨틱한)") },
+                            placeholder = {
+                                if (viewModel.musicPromptText.isEmpty()) {
+                                    Text(
+                                        text = "음악 분위기를 설명해주세요 (예: 신나는, 슬픈, 로맨틱한)",
+                                        color = Color.LightGray,
+                                        fontSize = 14.sp
+                                    )
+                                }
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(100.dp)
@@ -372,7 +380,8 @@ fun EditScreen(
                                 unfocusedBorderColor = Color.Transparent,
                                 focusedBorderColor = Color.Transparent,
                                 unfocusedContainerColor = Color(0xFFFCF7F0),
-                                focusedContainerColor = Color(0xFFFCF7F0)
+                                focusedContainerColor = Color(0xFFFCF7F0),
+                                cursorColor = Color.LightGray
                             ),
                             shape = RoundedCornerShape(8.dp)
                         )
@@ -422,7 +431,8 @@ fun EditScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedContainerColor = Color(0xFFFCF7F0),
-                    focusedContainerColor = Color(0xFFFCF7F0)
+                    focusedContainerColor = Color(0xFFFCF7F0),
+                    cursorColor = Color.LightGray
                 ),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -444,7 +454,8 @@ fun EditScreen(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedContainerColor = Color(0xFFFCF7F0),
-                    focusedContainerColor = Color(0xFFFCF7F0)
+                    focusedContainerColor = Color(0xFFFCF7F0),
+                    cursorColor = Color.LightGray
                 ),
                 shape = RoundedCornerShape(8.dp)
             )

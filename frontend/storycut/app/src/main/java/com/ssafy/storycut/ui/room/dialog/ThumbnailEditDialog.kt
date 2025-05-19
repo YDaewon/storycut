@@ -138,32 +138,18 @@ fun ThumbnailEditDialog(
                     // 변경하기 버튼
                     Button(
                         onClick = {
-                            if (selectedImageUri != null) {
-                                scope.launch {
-                                    try {
-                                        onUpdateThumbnail(selectedImageUri)
-                                    } catch (e: Exception) {
-                                        Toast.makeText(
-                                            context,
-                                            "썸네일 업데이트 중 오류가 발생했습니다: ${e.message}",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "변경할 이미지를 선택해주세요.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            selectedImageUri?.let { uri ->
+                                onUpdateThumbnail(uri)
                             }
                         },
-                        enabled = selectedImageUri != null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFFD0B699),
-                            disabledContainerColor = Color.Gray
+                            contentColor = Color.White
                         ),
-                        modifier = Modifier.weight(1f)
+                        enabled = selectedImageUri != null
                     ) {
                         Text("변경하기")
                     }

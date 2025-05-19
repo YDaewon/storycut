@@ -112,7 +112,7 @@ fun EnterRoomDialog(
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = Color(0xFFD0B699)
                         ),
-                        border = BorderStroke(1.dp, Color.LightGray)
+                        border = BorderStroke(1.dp, Color(0xFFD0B699))
                     ) {
                         Text(text = "취소")
                     }

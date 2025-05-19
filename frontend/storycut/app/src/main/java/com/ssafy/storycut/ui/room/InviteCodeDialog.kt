@@ -101,7 +101,7 @@ fun InviteCodeDialog(
                         )
                         .border(
                             width = 1.dp,
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                            color = Color(0xFFD0B699),
                             shape = RoundedCornerShape(8.dp)
                         )
                         .padding(16.dp),
@@ -110,11 +110,8 @@ fun InviteCodeDialog(
                     Text(
                         text = inviteCode,
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = if (remainingTime.value > 0)
-                            Color(0xFFD0B699)
-                        else
-                            Color.Gray,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color(0xFF4B3621),
                         textAlign = TextAlign.Center,
                         letterSpacing = 2.sp
                     )
@@ -133,7 +130,7 @@ fun InviteCodeDialog(
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = Color(0xFFD0B699)
                         ),
-                        border = BorderStroke(1.dp, Color.LightGray)
+                        border = BorderStroke(1.dp, Color(0xFFD0B699))
                     ) {
                         Text(text = "닫기")
                     }
