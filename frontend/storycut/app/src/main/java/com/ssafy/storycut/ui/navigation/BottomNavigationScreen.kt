@@ -48,6 +48,8 @@ import kotlinx.coroutines.delay
 import androidx.compose.ui.Alignment
 import com.ssafy.storycut.data.local.datastore.TokenManager
 import com.ssafy.storycut.ui.auth.AuthViewModel
+import com.ssafy.storycut.ui.navigation.BottomNavigationViewModel
+import androidx.compose.runtime.livedata.observeAsState
 
 class CustomNavigationShape(private val selectedIndex: Int, private val totalItems: Int) : Shape {
     override fun createOutline(
@@ -133,6 +135,7 @@ class CustomNavigationShape(private val selectedIndex: Int, private val totalIte
 @Composable
 fun MainScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
+    bottomNavViewModel: BottomNavigationViewModel = hiltViewModel(),
     tokenManager: TokenManager,
     onNavigateToLogin: () -> Unit = {},
     navigateToShorts: Boolean = false,
@@ -148,6 +151,9 @@ fun MainScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val selectedIndex = items.indexOfFirst { it.route == currentRoute }.let { if (it < 0) 0 else it }
+
+    // 하단 네비게이션 표시 여부
+    val isBottomNavVisible by bottomNavViewModel.isBottomNavVisible.observeAsState(true)
 
     // 화면 너비 가져오기
     val configuration = LocalConfiguration.current
@@ -179,7 +185,6 @@ fun MainScreen(
         }
     }
 
-
     LaunchedEffect(navigateToShorts) {
         if (navigateToShorts) {
             // 아주 짧은 딜레이 후 이동 (이는 메인 화면이 완전히 로드된 후 이동하도록 함)
@@ -195,7 +200,7 @@ fun MainScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            if (!isVideoDetailScreen) {
+            if (!isVideoDetailScreen && isBottomNavVisible && currentRoute != Navigation.Main.HOME) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()

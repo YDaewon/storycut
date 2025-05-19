@@ -52,11 +52,11 @@ fun MusicSelectionDialog(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE0E0E0)
+                        containerColor = Color(0xFFE7B549)
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("자동으로 만들기", color = Color.Black)
+                    Text("자동으로 만들기", color = Color.White)
                 }
 
                 // 프롬프트로 만들기 옵션
@@ -69,11 +69,11 @@ fun MusicSelectionDialog(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE0E0E0)
+                        containerColor = Color(0xFFE7B549)
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("프롬프트로 만들기", color = Color.Black)
+                    Text("프롬프트로 만들기", color = Color.White)
                 }
             }
         }

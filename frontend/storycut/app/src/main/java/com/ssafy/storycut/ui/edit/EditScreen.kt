@@ -362,10 +362,17 @@ fun EditScreen(
                             placeholder = { Text("음악 분위기를 설명해주세요 (예: 신나는, 슬픈, 로맨틱한)") },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(100.dp),
+                                .height(100.dp)
+                                .shadow(
+                                    elevation = 4.dp,
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .background(Color(0xFFFCF7F0)),
                             colors = OutlinedTextFieldDefaults.colors(
-                                unfocusedBorderColor = Color.LightGray,
-                                focusedBorderColor = Color.Gray
+                                unfocusedBorderColor = Color.Transparent,
+                                focusedBorderColor = Color.Transparent,
+                                unfocusedContainerColor = Color(0xFFFCF7F0),
+                                focusedContainerColor = Color(0xFFFCF7F0)
                             ),
                             shape = RoundedCornerShape(8.dp)
                         )
@@ -374,25 +381,29 @@ fun EditScreen(
                 HorizontalDivider(color = Color.LightGray)
             }
 
-            // 옵션추가 버튼 - 모든 옵션이 추가된 경우 비활성화
+            Spacer(modifier = Modifier.height(8.dp))  // 간격 추가
+
+            // 옵션추가 버튼 - 모든 옵션이 추가된 경우 숨김
             val allOptionsAdded = viewModel.hasMosaic && viewModel.applySubtitle && viewModel.hasBackgroundMusic
-            Button(
-                onClick = { showOptionDialog = true },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFD0B699),
-                    disabledContainerColor = Color(0xFFDDDDDD)
-                ),
-                shape = RoundedCornerShape(8.dp),
-                enabled = !allOptionsAdded // 모든 옵션이 추가된 경우 비활성화
-            ) {
-                Text(
-                    "옵션추가",
-                    color = if (allOptionsAdded) Color.Gray else Color.White
-                )
+            if (!allOptionsAdded) {  // 모든 옵션이 추가되지 않은 경우에만 버튼 표시
+                Button(
+                    onClick = { showOptionDialog = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFD0B699)
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        "옵션추가",
+                        color = Color.White
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             // 영상 제목 입력 필드 (두 번째 파일에서 추가됨)
             TextField(

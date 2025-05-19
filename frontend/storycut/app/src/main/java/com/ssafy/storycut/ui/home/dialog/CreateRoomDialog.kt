@@ -3,6 +3,7 @@ package com.ssafy.storycut.ui.home.dialog
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,11 +81,12 @@ fun CreateRoomDialog(
             ) {
                 Text(
                     text = "공유방 생성",
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    color = Color(0xFF333333)
                 )
+
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // 썸네일 이미지 선택 영역 (기존 코드 유지)
                 Box(
@@ -91,12 +94,7 @@ fun CreateRoomDialog(
                         .fillMaxWidth()
                         .height(120.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color(0xFFF5F5F5))
-                        .border(
-                            width = 1.dp,
-                            color = Color.LightGray,
-                            shape = RoundedCornerShape(8.dp)
-                        )
+                        .background(Color(0xFFFCF7F0))
                         .clickable {
                             galleryLauncher.launch("image/*")
                         },
@@ -177,13 +175,23 @@ fun CreateRoomDialog(
                 OutlinedTextField(
                     value = roomTitle,
                     onValueChange = { roomTitle = it },
-                    label = { Text("방 제목 (2자 이상)") }, // 라벨 수정
-                    placeholder = { Text("방 제목을 입력하세요 (2자 이상)") }, // 플레이스홀더 수정
+                    label = { Text("방 제목 (2자 이상)") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp),
+                        .padding(horizontal = 0.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        disabledContainerColor = Color(0xFFFCF7F0),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        cursorColor = Color.LightGray
+                    ),
                     singleLine = true,
-                    isError = showErrorMessage && (!isTitleValid) // 유효성 검사 조건 변경
+                    isError = showErrorMessage && (!isTitleValid)
                 )
 
                 // 나머지 필드는 동일하게 유지
@@ -191,7 +199,20 @@ fun CreateRoomDialog(
                     value = roomPassword,
                     onValueChange = { roomPassword = it },
                     label = { Text("비밀번호 (선택)") },
-                    placeholder = { Text("비밀번호를 입력하세요") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 0.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        disabledContainerColor = Color(0xFFFCF7F0),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        cursorColor = Color.LightGray
+                    ),
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     trailingIcon = {
@@ -208,9 +229,6 @@ fun CreateRoomDialog(
                             )
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
                     singleLine = true
                 )
 
@@ -219,11 +237,21 @@ fun CreateRoomDialog(
                     value = roomContext,
                     onValueChange = { roomContext = it },
                     label = { Text("방 설명") },
-                    placeholder = { Text("방 설명을 입력하세요") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(120.dp)
-                        .padding(vertical = 8.dp),
+                        .padding(horizontal = 0.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        disabledContainerColor = Color(0xFFFCF7F0),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        cursorColor = Color.LightGray
+                    ),
                     isError = showErrorMessage && roomContext.isBlank()
                 )
 
@@ -258,7 +286,11 @@ fun CreateRoomDialog(
                 ) {
                     OutlinedButton(
                         onClick = onDismiss,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color(0xFFE7B549)
+                        ),
+                        border = BorderStroke(1.dp, Color.LightGray)
                     ) {
                         Text(text = "취소")
                     }
@@ -281,7 +313,10 @@ fun CreateRoomDialog(
                                 onCreateRoom(request, imageUri)
                             }
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFE7B549)
+                        )
                     ) {
                         Text(text = "생성")
                     }

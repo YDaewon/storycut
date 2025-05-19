@@ -8,14 +8,19 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.pointer.pointerInput
@@ -66,6 +71,25 @@ fun HomeScreen(
     // 생성 또는 입장 진행 상태
     var isProcessingRoom by remember { mutableStateOf(false) }
 
+    // 스크롤 상태
+    val lazyListState = rememberLazyListState()
+    val showScrollToTop by remember {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex > 0
+        }
+    }
+
+    // 스크롤 상태 변경을 위한 상태
+    var shouldScrollToTop by remember { mutableStateOf(false) }
+
+    // 스크롤 처리
+    LaunchedEffect(shouldScrollToTop) {
+        if (shouldScrollToTop) {
+            lazyListState.animateScrollToItem(0)
+            shouldScrollToTop = false
+        }
+    }
+
     // 새로 생성된 방으로 자동 이동
     LaunchedEffect(createdRoomId) {
         if (createdRoomId.isNotEmpty()) {
@@ -115,6 +139,7 @@ fun HomeScreen(
         } else {
             // 전체 콘텐츠를 하나의 LazyColumn으로 구성
             LazyColumn(
+                state = lazyListState,
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
@@ -149,7 +174,7 @@ fun HomeScreen(
                                 // 버튼 1: YouTube 업로드
                                 Button(
                                     onClick = {
-                                        navController?.navigateToMainTab(Navigation.Main.SHORTS_UPLOAD)
+                                        navController?.navigateToMainTab(Navigation.Main.SHORTS_UPLOAD, hideBottomNav = true)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -188,7 +213,7 @@ fun HomeScreen(
                                 Button(
                                     onClick = {
                                         // 영상 편집 기능
-                                        navController?.navigateToMainTab(Navigation.Main.EDIT)
+                                        navController?.navigateToMainTab(Navigation.Main.EDIT, hideBottomNav = true)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -226,7 +251,7 @@ fun HomeScreen(
                                 // 버튼 3: 마이페이지
                                 Button(
                                     onClick = {
-                                        navController?.navigateToMainTab(Navigation.Main.MYPAGE)
+                                        navController?.navigateToMainTab(Navigation.Main.MYPAGE, hideBottomNav = true)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -308,7 +333,7 @@ fun HomeScreen(
                                 .align(Alignment.CenterStart)
                                 .padding(start = 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp) // 텍스트와 버튼 사이 간격
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)  // 16.dp에서 24.dp로 증가
                         ) {
                             // 참가중인 방 텍스트
                             Text(
@@ -356,6 +381,9 @@ fun HomeScreen(
                     }
                 } else {
                     // 방 목록 표시 (방이 있는 경우)
+                    item {
+                        Spacer(modifier = Modifier.height(12.dp))  // 간격 추가
+                    }
                     items(myRooms) { room ->
                         Box(
                             modifier = Modifier
@@ -372,6 +400,37 @@ fun HomeScreen(
                             )
                         }
                     }
+                }
+            }
+        }
+
+        // 상단으로 이동 버튼
+        if (showScrollToTop) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+                    .align(Alignment.BottomCenter)
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        shouldScrollToTop = true
+                    },
+                    containerColor = Color(0xFFE7B549),
+                    contentColor = Color.White,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .align(Alignment.Center)
+                        .shadow(
+                            elevation = 4.dp,
+                            shape = CircleShape
+                        )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = "상단으로 이동",
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
             }
         }
@@ -435,17 +494,25 @@ fun HomeScreen(
                 Card(
                     modifier = Modifier
                         .padding(16.dp)
-                        .width(200.dp),
-                    shape = RoundedCornerShape(8.dp)
+                        .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White
+                    )
                 ) {
                     Column(
                         modifier = Modifier
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(
+                            color = Color(0xFFE7B549)
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text(text = "방으로 이동 중...", fontSize = 14.sp)
+                        Text(
+                            text = "방으로 이동 중...",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.ssafy.storycut.ui.home.dialog
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -36,24 +37,43 @@ fun EnterRoomDialog(
             ) {
                 Text(
                     text = "초대코드로 입장",
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    color = Color.Gray
                 )
 
-                // 초대코드 입력
+                Spacer(modifier = Modifier.height(24.dp))
+
                 OutlinedTextField(
                     value = inviteCode,
                     onValueChange = { inviteCode = it },
                     label = { Text("초대코드") },
-                    placeholder = { Text("초대코드를 입력하세요") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp),
+                        .padding(horizontal = 0.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        disabledContainerColor = Color(0xFFFCF7F0),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        cursorColor = Color.LightGray
+                    ),
                     singleLine = true,
                     isError = showErrorMessage && inviteCode.isBlank()
                 )
+
+                if (showErrorMessage && inviteCode.isBlank()) {
+                    Text(
+                        text = "초대코드를 입력해주세요",
+                        color = MaterialTheme.colorScheme.error,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                }
 
                 // 비밀번호 입력 (선택 사항)
                 OutlinedTextField(
@@ -64,19 +84,20 @@ fun EnterRoomDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        disabledContainerColor = Color(0xFFFCF7F0),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        cursorColor = Color.LightGray
+                    ),
                     singleLine = true,
                     visualTransformation = PasswordVisualTransformation()  // 비밀번호 마스킹
                 )
-
-                // 에러 메시지
-                if (showErrorMessage && inviteCode.isBlank()) {
-                    Text(
-                        text = "초대코드를 입력해주세요",
-                        color = MaterialTheme.colorScheme.error,
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-                }
 
                 // 버튼 영역
                 Row(
@@ -87,7 +108,11 @@ fun EnterRoomDialog(
                 ) {
                     OutlinedButton(
                         onClick = onDismiss,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color(0xFFE7B549)
+                        ),
+                        border = BorderStroke(1.dp, Color.LightGray)
                     ) {
                         Text(text = "취소")
                     }
@@ -103,7 +128,10 @@ fun EnterRoomDialog(
                                 onDismiss()
                             }
                         },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFE7B549)
+                        )
                     ) {
                         Text(text = "입장")
                     }
