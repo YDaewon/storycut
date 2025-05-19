@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: storycut
+  profiles:
+    active: local
+    group:
+      local: local, secret
+      prod: prod, secret
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  #p6spy query logging
+  decorator:
+    datasource:
+      p6spy:
+        enable-logging: true
+
+  data:
+    redis:
+      repositories:
+        enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# springdoc:
+#  swagger-ui:
+#    urls:
+#      - name: "Storycut API"
+        # url: ${app.baseUrl}/api/v1/spring/v3/api-docs
+#        url: ${app.baseUrl}/v3/api-docs
+        # url: /v3/api-docs
+    # path: /api/v1/spring/swagger-ui.html
+#    path: /swagger-ui.html
+#    disable-swagger-default-url: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    urls:
+      - name: "Storycut API"
+        url: /v3/api-docs
+
+
+application:
+  version: 1.0.0

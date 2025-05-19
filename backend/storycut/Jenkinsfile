@@ -1,0 +1,176 @@
+pipeline {
+    agent {
+        label 'jenkins-agent'
+    }
+
+    environment {
+        IMAGE_NAME = 'jiwon9559/storycut'      // Docker 이미지 정보
+        TAG = 'latest'
+        DEPLOY_SERVER = 'k12d108.p.ssafy.io'
+        DEPLOY_USER = 'ubuntu'
+        DEPLOY_PATH = '/home/ubuntu/deploy/app'
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+        SECRET_YML = credentials('SPRINGBOOT_APPLICATION_SECRET_YML')
+    }
+
+    /*
+        주요 기능
+        1. GitLab에서 코드 체크아웃
+        2. ./gradlew build 로 JAR 파일 빌드
+        3. Docker 이미지 빌드
+        4. Docker Hub에 로그인 후 이미지 푸시
+        5. 배포
+    */
+
+    stages {
+
+        // 1. GitLab에서 코드 체크아웃(GitLab 저장소의 소스 코드를 가져옴)
+        stage('Chekout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        // 2. application-secret.yml 생성
+        stage('Write application-secret.yml'){
+            steps {
+                script{
+                    dir('backend/storycut/src/main/resources') {
+                        // base64 인코딩된 문자열을 .b64 파일로 저장
+                        writeFile file: 'application-secret.yml.b64', text: "${env.SECRET_YML}"
+
+                        // base64 디코딩 후 원래 YAML 복원
+                        sh 'base64 -d application-secret.yml.b64 > application-secret.yml'
+
+                        // 보안상 .b64 파일 삭제
+                        sh 'rm -f application-secret.yml.b64'
+
+                        // 정상 생성 여부 확인
+                        sh 'test -f application-secret.yml && echo "✅ YAML 생성 완료" || echo "❌ YAML 생성 실패"'
+                    }
+                }
+            }
+        }
+
+        // 3. JAR 파일 빌드 (Gradle 빌드)
+        stage('Build') {
+            steps {
+                dir('backend/storycut') {
+                    // gradlew 실행 권한 부여
+                    sh 'chmod +x ./gradlew'
+                    // Gradle 빌드 실행
+                    sh './gradlew clean build -x test'
+                }
+            }
+        }
+
+        // 4. ./gradlew build로 JAR 파일 빌드
+        stage('Build Docker Image'){
+            steps {
+                dir('backend/storycut') {
+                    // build-arg를 이용해 jar 파일을 전달하고 Docker Hub 푸시 준비
+                    echo "멀티 스테이지 Dockerfile을 이용해 이미지 빌드"
+                    sh 'docker build -t $IMAGE_NAME:$TAG .'
+                }
+            }
+        }
+
+        // 5. Docker Hub에 로그인 후 이미지 푸시
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push $IMAGE_NAME:$TAG
+                    '''
+                }
+            }
+            post {
+                always {
+                    sh 'rm -f backend/storycut/src/main/resources/application-secret.yml'
+                    // 로그아웃을 하는 이유: 보안 유지 목적
+                    sh 'docker logout'
+                }
+            }
+        }
+
+        // 6. 배포
+        stage('Deploy to EC2') {
+            steps {
+                sshagent(credentials: ['ec2-ssh-key']) {
+                    sh(script: """
+                        ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_SERVER << EOF
+                        cd /home/ubuntu/data
+                        docker pull $IMAGE_NAME:$TAG
+                        docker compose up -d
+                        EOF
+                    """, returnStatus: true)
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                def fullBranch = sh(script: 'git name-rev --name-only HEAD', returnStdout: true).trim()
+                def gitBranch = fullBranch.replaceAll('remotes/origin/', '').replaceAll('refs/heads/', '')
+                def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                def commitMsg = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                def commitAuthor = sh(script: 'git log -1 --pretty=%an', returnStdout: true).trim()
+                def koreaTime = new Date(System.currentTimeMillis() + 9 * 60 * 60 * 1000)
+                def formattedTime = koreaTime.format('yyyy-MM-dd HH:mm')
+
+                mattermostSend(
+                    endpoint: 'https://meeting.ssafy.com/hooks/w66jd49smjdwzeg35edab7j6ce',
+                    channel: 'D108-Jenkins',
+                    icon: ':rocket:',
+                    color: '#36a64f',
+                    message: "**✅ Spring Boot 빌드 성공!**\n" +
+                            "--------------------------------------------------\n" +
+                            "*Branch*: ${gitBranch} \n" +
+                            "*Commit*: ${gitCommit} - ${commitMsg} \n" +
+                            "*Author*: ${commitAuthor}\n" +
+                            "*Build Time*: ${formattedTime}\n" +
+
+                            "🧾[빌드 로그 확인](${env.BUILD_URL})\n" +
+                            "✔️[소스 코드 변경사항](${env.BUILD_URL}changes)\n " +
+                            "📈[트렌드 보기](${env.BUILD_URL}trend)"
+                )
+            }
+        }
+        failure {
+            script {
+                def fullBranch = sh(script: 'git name-rev --name-only HEAD', returnStdout: true).trim()
+                def gitBranch = fullBranch.replaceAll('remotes/origin/', '').replaceAll('refs/heads/', '')
+                def gitCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                def commitMsg = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                def commitAuthor = sh(script: 'git log -1 --pretty=%an', returnStdout: true).trim()
+                def koreaTime = new Date(System.currentTimeMillis() + 9 * 60 * 60 * 1000)
+                def formattedTime = koreaTime.format('yyyy-MM-dd HH:mm')
+
+                mattermostSend(
+                    endpoint: 'https://meeting.ssafy.com/hooks/w66jd49smjdwzeg35edab7j6ce',
+                    channel: 'D108-Jenkins',
+                    icon: ':fire:',
+                    color: '#e01e5a',
+                    message: "**❌ Spring Boot 빌드 실패**\n" +
+                            "--------------------------------------------------\n" +
+                            "*Branch*: ${gitBranch} \n" +
+                            "*Commit*: ${gitCommit} - ${commitMsg} \n" +
+                            "*Author*: ${commitAuthor}\n" +
+                            "*Build Time*: ${formattedTime}\n" +
+
+                            "🧾[빌드 로그 확인](${env.BUILD_URL})\n" +
+                            "✔️[소스 코드 변경사항](${env.BUILD_URL}changes)\n " +
+                            "📈[트렌드 보기](${env.BUILD_URL}trend)"
+                )
+            }
+        }
+    }
+}

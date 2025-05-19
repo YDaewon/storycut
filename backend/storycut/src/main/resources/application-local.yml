@@ -1,0 +1,42 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  # MySQL 설정
+  datasource:
+    url: jdbc:mysql://localhost:3306/storycut
+
+  # Redis 설정
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1/spring
+
+
+
+app:
+  baseUrl: http://localhost:8080
+  dev-mode: true  # 개발 모드 활성화 (더미 데이터 사용)
+  encryption:
+    key: "storycutencryptionkey123456"  # 암호화 키 (실제 환경에서는 보안 설정 필요)
+
+logging:
+  file:
+    name: logs/app.log
+  level:
+    org.springframework.security: WARN  # Security 관련 로그 줄이기
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG  # 요청 로그 줄이기
+    com.storycut.domain.auth.filter: DEBUG  # JWT 인증 필터 로그 활성화
+    org.springframework.web: WARN  # Spring Web 관련 로그 최소화
+    org.apache.coyote.http11: WARN  # Tomcat 요청 로그 줄이기
+    org.apache.tomcat: WARN  # Tomcat 관련 상세 로그 줄이기
+    com.storycut: INFO  # 앱 로그 레벨
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"

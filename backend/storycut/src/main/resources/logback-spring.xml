@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <!-- 기본 설정 포함 -->
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <!-- 변수 -->
+  <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+  <springProperty scope="context" name="activeProfile" source="spring.profiles.active"/>
+  <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"/>
+
+  <!-- 콘솔 로그 -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+      <charset>utf8</charset>
+    </encoder>
+  </appender>
+
+  <!-- 파일 로그 (prod용) -->
+  <springProfile name="prod">
+    <property name="LOG_FILE" value="/logs/app.log"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_FILE}</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+        <maxHistory>7</maxHistory>
+      </rollingPolicy>
+      <encoder>
+        <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        <charset>utf8</charset>
+      </encoder>
+    </appender>
+  </springProfile>
+
+  <!-- 파일 로그 (local용) -->
+  <springProfile name="local">
+    <property name="LOG_FILE" value="logs/app.log"/>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_FILE}</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+        <maxHistory>3</maxHistory>
+      </rollingPolicy>
+      <encoder>
+        <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        <charset>utf8</charset>
+      </encoder>
+    </appender>
+  </springProfile>
+
+  <!-- P6Spy 로그 -->
+  <logger name="p6spy" level="INFO" additivity="false">
+    <appender-ref ref="CONSOLE" />
+    <springProfile name="prod,local">
+      <appender-ref ref="FILE" />
+    </springProfile>
+  </logger>
+
+  <!-- 예외 로그 -->
+  <logger name="com.storycut.global.exception" level="ERROR" additivity="false">
+    <appender-ref ref="CONSOLE" />
+    <springProfile name="prod,local">
+      <appender-ref ref="FILE" />
+    </springProfile>
+  </logger>
+
+  <!-- prod 프로파일 -->
+  <springProfile name="prod">
+    <root level="WARN">
+      <appender-ref ref="CONSOLE" />
+      <appender-ref ref="FILE" />
+    </root>
+
+    <logger name="com.storycut" level="INFO" additivity="false">
+      <appender-ref ref="CONSOLE" />
+      <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="org.springframework.security" level="WARN" />
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="WARN" />
+    <logger name="org.springframework.web" level="WARN" />
+    <logger name="org.apache.coyote.http11" level="WARN" />
+    <logger name="org.apache.tomcat" level="WARN" />
+  </springProfile>
+
+  <!-- local 프로파일 -->
+  <springProfile name="local">
+    <root level="INFO">
+      <appender-ref ref="CONSOLE" />
+      <appender-ref ref="FILE" />
+    </root>
+
+    <logger name="com.storycut" level="DEBUG" additivity="false">
+      <appender-ref ref="CONSOLE" />
+      <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="org.springframework.security" level="WARN" />
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG" />
+    <logger name="com.stroycut.domain.auth.filter" level="DEBUG" />
+    <logger name="org.springframework.web" level="WARN" />
+    <logger name="org.apache.coyote.http11" level="WARN" />
+    <logger name="org.apache.tomcat" level="WARN" />
+    <logger name="com.stroycut.api.mcp" level="OFF" />
+  </springProfile>
+</configuration>

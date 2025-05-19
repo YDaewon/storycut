@@ -1,0 +1,46 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  # MySQL 설정
+  datasource:
+    url: jdbc:mysql://k12d108.p.ssafy.io:3306/storycut
+
+  # Redis 설정
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1/spring
+
+app:
+  baseUrl: https://k12d108.p.ssafy.io
+  # 앱 리다이렉션 스키마 설정
+  dev-mode: false  # 개발 모드 활성화 (더미 데이터 사용)
+  encryption:
+    key: "storycutencryptionkey123456"  # 암호화 키 (실제 환경에서는 보안 설정 필요)
+  mobile:
+    redirectScheme: stroycut://oauth2/redirect
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  file:
+    name: /logs/app.log
+  level:
+    org.springframework.security: WARN  # Security 관련 로그 줄이기
+    org.springframework.web.filter.CommonsRequestLoggingFilter: WARN  # 요청 로그 줄이기
+    com.finbattle.global.common.filter.JWTFilter: WARN  # JWT 필터 로깅 최소화
+    org.springframework.web: WARN  # Spring Web 관련 로그 최소화
+    org.apache.coyote.http11: WARN  # Tomcat 요청 로그 줄이기
+    org.apache.tomcat: WARN  # Tomcat 관련 상세 로그 줄이기
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
