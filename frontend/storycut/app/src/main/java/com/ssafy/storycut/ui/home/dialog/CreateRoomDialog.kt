@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material3.TextFieldDefaults
@@ -188,7 +189,11 @@ fun CreateRoomDialog(
                         disabledIndicatorColor = Color.Transparent,
                         focusedLabelColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray
+                        cursorColor = Color.LightGray,
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     ),
                     singleLine = true,
                     isError = showErrorMessage && (!isTitleValid)
@@ -211,7 +216,11 @@ fun CreateRoomDialog(
                         disabledIndicatorColor = Color.Transparent,
                         focusedLabelColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray
+                        cursorColor = Color.LightGray,
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     ),
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -250,7 +259,11 @@ fun CreateRoomDialog(
                         disabledIndicatorColor = Color.Transparent,
                         focusedLabelColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray
+                        cursorColor = Color.LightGray,
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     ),
                     isError = showErrorMessage && roomContext.isBlank()
                 )

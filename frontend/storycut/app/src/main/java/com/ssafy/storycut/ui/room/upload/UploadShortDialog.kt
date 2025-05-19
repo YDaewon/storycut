@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -131,12 +132,19 @@ fun UploadShortDialog(
                     singleLine = true,
                     maxLines = 1,
                     colors = TextFieldDefaults.colors(
-                        cursorColor = Color.LightGray,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        disabledContainerColor = Color(0xFFFCF7F0)
+                        disabledContainerColor = Color(0xFFFCF7F0),
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        cursorColor = Color.LightGray,
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     )
                 )
 

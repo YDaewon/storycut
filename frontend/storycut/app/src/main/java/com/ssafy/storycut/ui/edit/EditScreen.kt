@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -381,7 +382,11 @@ fun EditScreen(
                                 focusedBorderColor = Color.Transparent,
                                 unfocusedContainerColor = Color(0xFFFCF7F0),
                                 focusedContainerColor = Color(0xFFFCF7F0),
-                                cursorColor = Color.LightGray
+                                cursorColor = Color.LightGray,
+                                selectionColors = TextSelectionColors(
+                                    handleColor = Color(0xFFD0B699),
+                                    backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                                )
                             ),
                             shape = RoundedCornerShape(8.dp)
                         )
@@ -428,11 +433,17 @@ fun EditScreen(
                     )
                     .background(Color(0xFFFCF7F0)),
                 colors = TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
                     focusedContainerColor = Color(0xFFFCF7F0),
-                    cursorColor = Color.LightGray
+                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                    cursorColor = Color.LightGray,
+                    selectionColors = TextSelectionColors(
+                        handleColor = Color(0xFFD0B699),
+                        backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                    ),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 ),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -450,12 +461,16 @@ fun EditScreen(
                     )
                     .background(Color(0xFFFCF7F0))
                     .height(120.dp),
-                colors = TextFieldDefaults.colors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedBorderColor = Color.Transparent,
                     unfocusedContainerColor = Color(0xFFFCF7F0),
                     focusedContainerColor = Color(0xFFFCF7F0),
-                    cursorColor = Color.LightGray
+                    cursorColor = Color.LightGray,
+                    selectionColors = TextSelectionColors(
+                        handleColor = Color(0xFFD0B699),
+                        backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                    )
                 ),
                 shape = RoundedCornerShape(8.dp)
             )

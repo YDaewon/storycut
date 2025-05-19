@@ -2,6 +2,7 @@ package com.ssafy.storycut.ui.home.dialog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -60,7 +61,11 @@ fun EnterRoomDialog(
                         disabledIndicatorColor = Color.Transparent,
                         focusedLabelColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray
+                        cursorColor = Color.LightGray,
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     ),
                     singleLine = true,
                     isError = showErrorMessage && inviteCode.isBlank()
@@ -93,7 +98,11 @@ fun EnterRoomDialog(
                         disabledIndicatorColor = Color.Transparent,
                         focusedLabelColor = Color.Gray,
                         unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray
+                        cursorColor = Color.LightGray,
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     ),
                     singleLine = true,
                     visualTransformation = PasswordVisualTransformation()  // 비밀번호 마스킹

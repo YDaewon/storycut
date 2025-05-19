@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,6 +21,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -36,6 +39,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -187,11 +191,35 @@ fun MyPageScreen(
                     .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.Center
             ) {
-                BasicTextField(
+                TextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
                     singleLine = true,
                     textStyle = LocalTextStyle.current,
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        cursorColor = Color.LightGray,
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
+                    ),
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "검색",
+                            tint = Color(0xFFAAAAAA)
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            "사진 검색하기",
+                            color = Color(0xFFAAAAAA)
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .shadow(
@@ -199,38 +227,10 @@ fun MyPageScreen(
                             shape = RoundedCornerShape(32.dp)
                         )
                         .clip(RoundedCornerShape(32.dp))
-                        .background(Color(0xFFFCF7F0))
-                        .height(36.dp)
                         .focusRequester(focusRequester)
                         .onFocusChanged { focusState ->
                             isFocused = focusState.isFocused
-                        },
-                    decorationBox = { innerTextField ->
-                        Row(
-                            modifier = Modifier.padding(horizontal = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                Icons.Filled.Search,
-                                contentDescription = "검색",
-                                tint = Color(0xFFAAAAAA)
-                            )
-
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(horizontal = 8.dp)
-                            ) {
-                                if (searchQuery.isEmpty()) {
-                                    Text(
-                                        "사진 검색하기",
-                                        color = Color(0xFFAAAAAA)
-                                    )
-                                }
-                                innerTextField()
-                            }
                         }
-                    }
                 )
             }
 

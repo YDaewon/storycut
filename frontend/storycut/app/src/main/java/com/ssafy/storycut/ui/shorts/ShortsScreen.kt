@@ -45,6 +45,9 @@ import com.ssafy.storycut.ui.shorts.components.AuthScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.sp
 import com.ssafy.storycut.ui.shorts.components.TagChip
 
 @Composable
@@ -173,12 +176,15 @@ fun ShortsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)  // 요소 간 일정한 간격 적용
                 ) {
-                    // 화면 제목
+                    // 상단 타이틀
                     Text(
                         text = "유튜브 쇼츠 업로드",
-                        style = MaterialTheme.typography.headlineMedium,  // 크기 증가
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 16.sp,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 20.dp),  // 간격을 24.dp로 늘림
+                        textAlign = TextAlign.Center
                     )
 
                     // 비디오 선택 영역 (썸네일 포함) - 크기 확대
@@ -300,7 +306,7 @@ fun ShortsScreen(
                                     Box(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .background(MaterialTheme.colorScheme.primaryContainer),
+                                            .background(Color(0xFFFCF7F0)),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Column(
@@ -310,7 +316,7 @@ fun ShortsScreen(
                                                 imageVector = Icons.Default.Add,
                                                 contentDescription = null,
                                                 modifier = Modifier.size(48.dp),  // 크기 증가
-                                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                                tint = Color(0xFFD0B699)
                                             )
 
                                             Spacer(modifier = Modifier.height(8.dp))  // 간격 증가
@@ -319,7 +325,7 @@ fun ShortsScreen(
                                                 text = "선택된 비디오",
                                                 style = MaterialTheme.typography.titleMedium,  // 크기 증가
                                                 fontWeight = FontWeight.Bold,
-                                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                                                color = Color(0xFFD0B699)
                                             )
                                         }
                                     }
@@ -329,7 +335,7 @@ fun ShortsScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .background(MaterialTheme.colorScheme.surface),
+                                        .background(Color(0xFFFCF7F0)),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column(
@@ -339,7 +345,7 @@ fun ShortsScreen(
                                             imageVector = Icons.Default.Add,
                                             contentDescription = null,
                                             modifier = Modifier.size(56.dp),  // 크기 증가
-                                            tint = MaterialTheme.colorScheme.primary
+                                            tint = Color(0xFFD0B699)
                                         )
 
                                         Spacer(modifier = Modifier.height(8.dp))  // 간격 증가
@@ -347,7 +353,8 @@ fun ShortsScreen(
                                         Text(
                                             text = "비디오 선택",
                                             style = MaterialTheme.typography.titleMedium,  // 크기 증가
-                                            fontWeight = FontWeight.Bold
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color(0xFFD0B699)
                                         )
 
                                         Spacer(modifier = Modifier.height(4.dp))
@@ -355,7 +362,7 @@ fun ShortsScreen(
                                         Text(
                                             text = "영상 선택을 위해 클릭하세요",
                                             style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                                            color = Color(0xFFD0B699).copy(alpha = 0.7f)
                                         )
                                     }
                                 }
@@ -373,51 +380,107 @@ fun ShortsScreen(
                     OutlinedTextField(
                         value = title,
                         onValueChange = { title = it },
-                        label = { Text("쇼츠 제목") },
-                        placeholder = { Text("제목을 입력하세요") },
-                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("쇼츠 제목", color = Color.LightGray) },
+                        placeholder = { Text("제목을 입력하세요", color = Color.LightGray) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow(
+                                elevation = 4.dp,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .background(Color(0xFFFCF7F0)),
                         enabled = !isActionLoading,
                         singleLine = true,
-                        shape = RoundedCornerShape(8.dp),  // 모서리 둥글게
-                        textStyle = MaterialTheme.typography.bodyLarge  // 글자 크기 증가
+                        shape = RoundedCornerShape(8.dp),
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = Color.Transparent,
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedContainerColor = Color(0xFFFCF7F0),
+                            focusedContainerColor = Color(0xFFFCF7F0),
+                            cursorColor = Color.LightGray,
+                            focusedLabelColor = Color.LightGray,
+                            unfocusedLabelColor = Color.LightGray,
+                            selectionColors = TextSelectionColors(
+                                handleColor = Color(0xFFD0B699),
+                                backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                            )
+                        )
                     )
 
                     // 설명 입력 필드
                     OutlinedTextField(
                         value = description,
                         onValueChange = { description = it },
-                        label = { Text("쇼츠 설명") },
-                        placeholder = { Text("설명을 입력하세요") },
+                        label = { Text("쇼츠 설명", color = Color.LightGray) },
+                        placeholder = { Text("설명을 입력하세요", color = Color.LightGray) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(120.dp),  // 높이 증가 (100dp → 120dp)
+                            .height(120.dp)
+                            .shadow(
+                                elevation = 4.dp,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .background(Color(0xFFFCF7F0)),
                         enabled = !isActionLoading,
                         maxLines = 5,
-                        shape = RoundedCornerShape(8.dp),  // 모서리 둥글게
-                        textStyle = MaterialTheme.typography.bodyLarge  // 글자 크기 증가
+                        shape = RoundedCornerShape(8.dp),
+                        textStyle = MaterialTheme.typography.bodyLarge,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = Color.Transparent,
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedContainerColor = Color(0xFFFCF7F0),
+                            focusedContainerColor = Color(0xFFFCF7F0),
+                            cursorColor = Color.LightGray,
+                            focusedLabelColor = Color.LightGray,
+                            unfocusedLabelColor = Color.LightGray,
+                            selectionColors = TextSelectionColors(
+                                handleColor = Color(0xFFD0B699),
+                                backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                            )
+                        )
                     )
 
                     // 태그 입력 영역
                     Column(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)  // 간격 추가
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         // 태그 입력 필드와 추가 버튼
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)  // 간격 추가
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             OutlinedTextField(
                                 value = tagInput,
                                 onValueChange = { tagInput = it },
-                                label = { Text("태그") },
-                                placeholder = { Text("태그를 입력하세요") },
-                                modifier = Modifier.weight(1f),
+                                label = { Text("태그", color = Color.LightGray) },
+                                placeholder = { Text("태그를 입력하세요", color = Color.LightGray) },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .shadow(
+                                        elevation = 4.dp,
+                                        shape = RoundedCornerShape(8.dp)
+                                    )
+                                    .background(Color(0xFFFCF7F0)),
                                 enabled = !isActionLoading,
                                 singleLine = true,
-                                shape = RoundedCornerShape(8.dp),  // 모서리 둥글게
-                                textStyle = MaterialTheme.typography.bodyLarge  // 글자 크기 증가
+                                shape = RoundedCornerShape(8.dp),
+                                textStyle = MaterialTheme.typography.bodyLarge,
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    unfocusedBorderColor = Color.Transparent,
+                                    focusedBorderColor = Color.Transparent,
+                                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                                    focusedContainerColor = Color(0xFFFCF7F0),
+                                    cursorColor = Color.LightGray,
+                                    focusedLabelColor = Color.LightGray,
+                                    unfocusedLabelColor = Color.LightGray,
+                                    selectionColors = TextSelectionColors(
+                                        handleColor = Color(0xFFD0B699),
+                                        backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                                    )
+                                )
                             )
 
                             Button(
@@ -431,7 +494,11 @@ fun ShortsScreen(
                                 modifier = Modifier
                                     .height(56.dp)  // 높이 증가 (TextField와 맞춤)
                                     .padding(top = 4.dp),
-                                shape = RoundedCornerShape(8.dp)  // 모서리 둥글게
+                                shape = RoundedCornerShape(8.dp),  // 모서리 둥글게
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFD0B699),
+                                    disabledContainerColor = Color(0xFFD0B699).copy(alpha = 0.5f)
+                                )
                             ) {
                                 Text("추가")
                             }
@@ -479,7 +546,7 @@ fun ShortsScreen(
                             .fillMaxWidth()
                             .height(60.dp),  // 높이 증가 (48dp → 60dp)
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Red
+                            containerColor = Color(0xFFFE4343)
                         ),
                         shape = RoundedCornerShape(12.dp)  // 모서리 더 둥글게
                     ) {
