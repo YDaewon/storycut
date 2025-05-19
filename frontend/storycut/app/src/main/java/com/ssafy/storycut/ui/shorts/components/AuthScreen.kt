@@ -28,7 +28,7 @@ fun AuthScreen(
             imageVector = Icons.Default.Add,
             contentDescription = "YouTube",
             modifier = Modifier.size(100.dp),
-            tint = Color.Red
+            tint = Color(0xFFFE4343)
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -58,7 +58,7 @@ fun AuthScreen(
                 .fillMaxWidth()
                 .height(56.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Red
+                containerColor = Color(0xFFFE4343)
             )
         ) {
             Icon(

@@ -29,7 +29,7 @@ fun RoomOptionsDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("공유방 옵션") },
+        title = { Text("공유방 옵션", color = Color.Gray) },
         text = {
             Column(
                 modifier = Modifier
@@ -51,7 +51,7 @@ fun RoomOptionsDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("취소")
+                Text("취소", color = Color.Gray)
             }
         },
         shape = RoundedCornerShape(16.dp),
@@ -72,15 +72,16 @@ fun RoomOptionButton(
             .fillMaxWidth()
             .height(50.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.primary
+            containerColor = Color(0xFFE7B549),
+            contentColor = Color.White
         ),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text(
             text = text,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = Color.White
         )
     }
 }

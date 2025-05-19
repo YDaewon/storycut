@@ -19,7 +19,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
@@ -173,7 +175,14 @@ fun EditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(16f / 9f)
-                    .border(2.dp, Color(0xFF2196F3), RoundedCornerShape(4.dp))
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(12.dp),
+                        spotColor = Color.Gray
+                    )
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color.White)
+                    .border(1.dp, Color.White, RoundedCornerShape(12.dp))
                     .clickable { showVideoDialog = true },
                 contentAlignment = Alignment.Center
             ) {
@@ -373,7 +382,7 @@ fun EditScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFBBBBBB),
+                    containerColor = Color(0xFFD0B699),
                     disabledContainerColor = Color(0xFFDDDDDD)
                 ),
                 shape = RoundedCornerShape(8.dp),
@@ -381,21 +390,28 @@ fun EditScreen(
             ) {
                 Text(
                     "옵션추가",
-                    color = if (allOptionsAdded) Color.Gray else Color.Black
+                    color = if (allOptionsAdded) Color.Gray else Color.White
                 )
             }
 
             // 영상 제목 입력 필드 (두 번째 파일에서 추가됨)
-            OutlinedTextField(
+            TextField(
                 value = viewModel.videoTitle,
                 onValueChange = { viewModel.updateVideoTitle(it) },
-                placeholder = { Text("영상 제목을 입력하세요") },
+                placeholder = { Text("영상 제목을 입력하세요", color = Color.LightGray) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = Color.LightGray,
-                    focusedBorderColor = Color.Gray
+                    .padding(bottom = 8.dp)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .background(Color(0xFFFCF7F0)),
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                    focusedContainerColor = Color(0xFFFCF7F0)
                 ),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -404,13 +420,20 @@ fun EditScreen(
             OutlinedTextField(
                 value = viewModel.promptText,
                 onValueChange = { viewModel.updatePromptText(it) },
-                placeholder = { Text("영상에 대한 프롬프트를 입력하세요") },
+                placeholder = { Text("영상에 대한 프롬프트를 입력하세요", color = Color.LightGray) },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .background(Color(0xFFFCF7F0))
                     .height(120.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = Color.LightGray,
-                    focusedBorderColor = Color.Gray
+                colors = TextFieldDefaults.colors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                    focusedContainerColor = Color(0xFFFCF7F0)
                 ),
                 shape = RoundedCornerShape(8.dp)
             )
@@ -438,8 +461,8 @@ fun EditScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Black,
-                    disabledContainerColor = Color.Gray
+                    containerColor = Color(0xFFD0B699),
+                    disabledContainerColor = Color(0xFFD0B699).copy(alpha = 0.5f)
                 ),
                 shape = RoundedCornerShape(8.dp),
                 enabled = (!viewModel.isLoading && (viewModel.videoSelected || selectedVideoDto != null)) // 선택된 비디오가 있거나 VideoDto가 있는 경우 활성화

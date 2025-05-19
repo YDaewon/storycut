@@ -38,11 +38,11 @@ fun VideoUploadDialog(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE0E0E0)
+                        containerColor = Color(0xFFE7B549)
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("갤러리", color = Color.Black)
+                    Text("갤러리", color = Color.White)
                 }
 
                 // 내 쇼츠 버튼
@@ -52,11 +52,11 @@ fun VideoUploadDialog(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE0E0E0)
+                        containerColor = Color(0xFFE7B549)
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("내 쇼츠", color = Color.Black)
+                    Text("내 쇼츠", color = Color.White)
                 }
             }
         }

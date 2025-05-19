@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -178,7 +179,7 @@ fun MyPageScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Box(
                 modifier = Modifier
@@ -193,13 +194,12 @@ fun MyPageScreen(
                     textStyle = LocalTextStyle.current,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(32.dp))
-                        .border(
-                            width = 1.dp,
-                            color = if (isFocused) MaterialTheme.colorScheme.primary
-                            else MaterialTheme.colorScheme.outline,
+                        .shadow(
+                            elevation = 4.dp,
                             shape = RoundedCornerShape(32.dp)
                         )
+                        .clip(RoundedCornerShape(32.dp))
+                        .background(Color(0xFFFCF7F0))
                         .height(36.dp)
                         .focusRequester(focusRequester)
                         .onFocusChanged { focusState ->
@@ -213,7 +213,7 @@ fun MyPageScreen(
                             Icon(
                                 Icons.Filled.Search,
                                 contentDescription = "검색",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                tint = Color(0xFFAAAAAA)
                             )
 
                             Box(
@@ -224,7 +224,7 @@ fun MyPageScreen(
                                 if (searchQuery.isEmpty()) {
                                     Text(
                                         "사진 검색하기",
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = Color(0xFFAAAAAA)
                                     )
                                 }
                                 innerTextField()

@@ -306,7 +306,7 @@ fun MainScreen(
                                             )
                                             .size(48.dp)
                                             .clip(CircleShape)
-                                            .background(Color(0xFFFFB800))
+                                            .background(Color(0xFFE7B549))
                                             .padding(12.dp),
                                         contentAlignment = Alignment.Center
                                     ) {

@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -74,10 +75,7 @@ fun VideoSelectorFullScreenDialog(
                                 )
                             }
                         },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
+                        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFFD0B699), titleContentColor = Color.White)
                     )
 
                     Box(
@@ -122,15 +120,22 @@ fun VideoSelectorFullScreenDialog(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface)
+                        .background(Color.White)
                         .padding(16.dp)
                 ) {
                     Button(
                         onClick = { selectedVideo?.let { onVideoSelected(it) } },
                         enabled = selectedVideo != null,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFD0B699),
+                            disabledContainerColor = Color(0xFFD0B699).copy(alpha = 0.5f)
+                        )
                     ) {
-                        Text("확인")
+                        Text(
+                            "확인",
+                            color = Color.White
+                        )
                     }
                 }
             }

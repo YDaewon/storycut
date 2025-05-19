@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,14 +33,19 @@ fun OptionDialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(8.dp),
+                .wrapContentHeight()
+                .shadow(
+                    elevation = 8.dp,
+                    shape = RoundedCornerShape(16.dp),
+                    spotColor = Color.Gray.copy(alpha = 0.3f)
+                ),
+            shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
             )
         ) {
             Column(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(horizontal = 21.dp, vertical = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -63,11 +69,11 @@ fun OptionDialog(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE0E0E0)
+                            containerColor = Color(0xFFE7B549)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text("모자이크", color = Color.Black)
+                        Text("모자이크", color = Color.White)
                     }
                 }
 
@@ -82,11 +88,11 @@ fun OptionDialog(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE0E0E0)
+                            containerColor = Color(0xFFE7B549)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text("한국어 자막 추가", color = Color.Black)
+                        Text("한국어 자막 추가", color = Color.White)
                     }
                 }
 
@@ -101,11 +107,11 @@ fun OptionDialog(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE0E0E0)
+                            containerColor = Color(0xFFE7B549)
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text("배경 음악 추가", color = Color.Black)
+                        Text("배경 음악 추가", color = Color.White)
                     }
                 }
             }
