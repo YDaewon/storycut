@@ -176,7 +176,7 @@ fun SettingItemWithResourceIcon(
     showDivider: Boolean = true
 ) {
     val textColor = if (isWarning) {
-        Color(0xFFE7B549)  // 경고 색상을 0xFFE7B549로 변경
+        Color(0xFFD0B699)
     } else {
         MaterialTheme.colorScheme.onSurface
     }

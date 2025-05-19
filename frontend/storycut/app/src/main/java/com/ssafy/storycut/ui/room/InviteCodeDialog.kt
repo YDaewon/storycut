@@ -2,6 +2,7 @@ package com.ssafy.storycut.ui.room
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -61,7 +62,7 @@ fun InviteCodeDialog(
                     text = "초대코드",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = Color.Gray,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
@@ -95,7 +96,7 @@ fun InviteCodeDialog(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                         .background(
-                            color = MaterialTheme.colorScheme.primaryContainer,
+                            color = Color(0xFFFCF7F0),
                             shape = RoundedCornerShape(8.dp)
                         )
                         .border(
@@ -111,7 +112,7 @@ fun InviteCodeDialog(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = if (remainingTime.value > 0)
-                            MaterialTheme.colorScheme.primary
+                            Color(0xFFD0B699)
                         else
                             Color.Gray,
                         textAlign = TextAlign.Center,
@@ -128,7 +129,11 @@ fun InviteCodeDialog(
                 ) {
                     OutlinedButton(
                         onClick = onDismiss,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color(0xFFD0B699)
+                        ),
+                        border = BorderStroke(1.dp, Color.LightGray)
                     ) {
                         Text(text = "닫기")
                     }
@@ -136,7 +141,10 @@ fun InviteCodeDialog(
                     Button(
                         onClick = onCopy,
                         modifier = Modifier.weight(1f),
-                        enabled = remainingTime.value > 0 // 시간이 만료되면 복사 버튼 비활성화
+                        enabled = remainingTime.value > 0,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFD0B699)
+                        )
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.copy),

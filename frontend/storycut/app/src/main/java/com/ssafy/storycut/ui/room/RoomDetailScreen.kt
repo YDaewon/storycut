@@ -207,7 +207,7 @@ fun RoomDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFFF5F5F5))
+                .background(Color.White)
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
@@ -520,7 +520,11 @@ fun RoomDetailScreen(
                         text = "쇼츠 목록",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .background(Color.White)
+                                .padding(start = 16.dp, top = 16.dp, bottom = 8.dp)
                     )
 
                     // 비디오 목록 표시 방식 변경 - filteredVideos를 사용하도록 수정
@@ -528,26 +532,22 @@ fun RoomDetailScreen(
                         // 비디오가 없는 경우 메시지 표시
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                                .padding(16.dp),
+                                .fillMaxSize()
+                                .background(Color.White),
                             contentAlignment = Alignment.Center
                         ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = if (searchQuery.isBlank()) "업로드된 쇼츠가 없습니다" else "검색 결과가 없습니다",
-                                    color = Color.Gray,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
+                            Text(
+                                text = "업로드된 쇼츠가 없습니다",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.Gray
+                            )
                         }
                     } else {
                         // 비디오 목록 표시 - 그리드 형태로 배치
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .background(Color.White)
                                 .padding(horizontal = 16.dp)
                         ) {
                             // 항목을 2개씩 묶어서 행으로 표시

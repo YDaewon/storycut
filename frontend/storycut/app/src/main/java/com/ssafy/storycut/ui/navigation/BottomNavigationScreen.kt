@@ -200,7 +200,7 @@ fun MainScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            if (!isVideoDetailScreen && isBottomNavVisible && currentRoute != Navigation.Main.HOME) {
+            if (!isVideoDetailScreen && isBottomNavVisible) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -311,7 +311,7 @@ fun MainScreen(
                                             )
                                             .size(48.dp)
                                             .clip(CircleShape)
-                                            .background(Color(0xFFE7B549))
+                                            .background(Color(0xFFD0B699))
                                             .padding(12.dp),
                                         contentAlignment = Alignment.Center
                                     ) {

@@ -38,7 +38,7 @@ fun VideoUploadDialog(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE7B549)
+                        containerColor = Color(0xFFD0B699)
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
@@ -52,7 +52,7 @@ fun VideoUploadDialog(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFE7B549)
+                        containerColor = Color(0xFFD0B699)
                     ),
                     shape = RoundedCornerShape(8.dp)
                 ) {

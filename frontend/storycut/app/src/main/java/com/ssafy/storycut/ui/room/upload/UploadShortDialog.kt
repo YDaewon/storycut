@@ -2,6 +2,7 @@ package com.ssafy.storycut.ui.room.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -67,7 +68,7 @@ fun UploadShortDialog(
                     text = "쇼츠 업로드",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = Color.Gray,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
@@ -78,12 +79,7 @@ fun UploadShortDialog(
                         .height(180.dp)
                         .padding(vertical = 8.dp)
                         .background(
-                            color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.outline,
+                            color = Color(0xFFFCF7F0),
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable { onVideoSelectClick() },
@@ -127,13 +123,21 @@ fun UploadShortDialog(
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("제목") },
-                    placeholder = { Text("쇼츠 제목을 입력하세요") },
+                    label = { Text("제목", color=Color.LightGray)},
+                    placeholder = { Text("쇼츠 제목을 입력하세요", color = Color.LightGray) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp),
                     singleLine = true,
-                    maxLines = 1
+                    maxLines = 1,
+                    colors = TextFieldDefaults.colors(
+                        cursorColor = Color.LightGray,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        disabledContainerColor = Color(0xFFFCF7F0)
+                    )
                 )
 
                 // 버튼 영역
@@ -145,7 +149,11 @@ fun UploadShortDialog(
                 ) {
                     OutlinedButton(
                         onClick = onDismiss,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color(0xFFD0B699)
+                        ),
+                        border = BorderStroke(1.dp, Color.LightGray)
                     ) {
                         Text(text = "취소")
                     }
@@ -157,7 +165,10 @@ fun UploadShortDialog(
                             }
                         },
                         modifier = Modifier.weight(1f),
-                        enabled = selectedVideo != null && title.isNotBlank()
+                        enabled = selectedVideo != null && title.isNotBlank(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFD0B699)
+                        )
                     ) {
                         Text(text = "업로드")
                     }

@@ -288,7 +288,7 @@ fun CreateRoomDialog(
                         onClick = onDismiss,
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Color(0xFFE7B549)
+                            contentColor = Color(0xFFD0B699)
                         ),
                         border = BorderStroke(1.dp, Color.LightGray)
                     ) {
@@ -315,7 +315,7 @@ fun CreateRoomDialog(
                         },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE7B549)
+                            containerColor = Color(0xFFD0B699)
                         )
                     ) {
                         Text(text = "생성")

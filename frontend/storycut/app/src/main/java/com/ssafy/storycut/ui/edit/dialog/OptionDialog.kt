@@ -69,7 +69,7 @@ fun OptionDialog(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE7B549)
+                            containerColor = Color(0xFFD0B699)
                         ),
                         shape = RoundedCornerShape(10.dp)
                     ) {
@@ -88,7 +88,7 @@ fun OptionDialog(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE7B549)
+                            containerColor = Color(0xFFD0B699)
                         ),
                         shape = RoundedCornerShape(10.dp)
                     ) {
@@ -107,7 +107,7 @@ fun OptionDialog(
                             .fillMaxWidth()
                             .height(48.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE7B549)
+                            containerColor = Color(0xFFD0B699)
                         ),
                         shape = RoundedCornerShape(10.dp)
                     ) {

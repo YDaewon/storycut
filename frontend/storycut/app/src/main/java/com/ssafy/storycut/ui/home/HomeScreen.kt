@@ -41,12 +41,14 @@ import com.ssafy.storycut.ui.home.dialog.CreateRoomDialog
 import com.ssafy.storycut.ui.home.dialog.EnterRoomDialog
 import com.ssafy.storycut.ui.home.dialog.LeaveRoomDialog
 import com.ssafy.storycut.ui.home.dialog.RoomOptionsDialog
+import com.ssafy.storycut.ui.navigation.BottomNavigationViewModel
 import com.ssafy.storycut.ui.navigation.Navigation
 import com.ssafy.storycut.ui.navigation.navigateToMainTab
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    bottomNavViewModel: BottomNavigationViewModel = hiltViewModel(),
     onRoomClick: (String) -> Unit = {},
     onCreateRoomClick: () -> Unit = {},
     onEnterRoomClick: () -> Unit = {},
@@ -174,7 +176,7 @@ fun HomeScreen(
                                 // 버튼 1: YouTube 업로드
                                 Button(
                                     onClick = {
-                                        navController?.navigateToMainTab(Navigation.Main.SHORTS_UPLOAD, hideBottomNav = true)
+                                        navController?.navigateToMainTab(Navigation.Main.SHORTS_UPLOAD, hideBottomNav = false, bottomNavViewModel = bottomNavViewModel)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -213,7 +215,7 @@ fun HomeScreen(
                                 Button(
                                     onClick = {
                                         // 영상 편집 기능
-                                        navController?.navigateToMainTab(Navigation.Main.EDIT, hideBottomNav = true)
+                                        navController?.navigateToMainTab(Navigation.Main.EDIT, hideBottomNav = false, bottomNavViewModel = bottomNavViewModel)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -251,7 +253,7 @@ fun HomeScreen(
                                 // 버튼 3: 마이페이지
                                 Button(
                                     onClick = {
-                                        navController?.navigateToMainTab(Navigation.Main.MYPAGE, hideBottomNav = true)
+                                        navController?.navigateToMainTab(Navigation.Main.MYPAGE, hideBottomNav = false, bottomNavViewModel = bottomNavViewModel)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -404,37 +406,6 @@ fun HomeScreen(
             }
         }
 
-        // 상단으로 이동 버튼
-        if (showScrollToTop) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        shouldScrollToTop = true
-                    },
-                    containerColor = Color(0xFFE7B549),
-                    contentColor = Color.White,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .align(Alignment.Center)
-                        .shadow(
-                            elevation = 4.dp,
-                            shape = CircleShape
-                        )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "상단으로 이동",
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-        }
-
         // 다이얼로그들과 진행 중 오버레이 표시
         if (showRoomOptionsDialog) {
             RoomOptionsDialog(
@@ -506,7 +477,7 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         CircularProgressIndicator(
-                            color = Color(0xFFE7B549)
+                            color = Color(0xFFD0B699)
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(

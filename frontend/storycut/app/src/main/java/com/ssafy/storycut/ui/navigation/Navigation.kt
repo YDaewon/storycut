@@ -56,11 +56,8 @@ fun NavController.navigateToShorts() {
 }
 
 // 하단 네비게이션
-fun NavController.navigateToMainTab(route: String, hideBottomNav: Boolean = false) {
+fun NavController.navigateToMainTab(route: String, hideBottomNav: Boolean = false, bottomNavViewModel: BottomNavigationViewModel? = null) {
     Log.d("Navigation", "메인 탭 이동: $route, 하단 네비게이션 숨김: $hideBottomNav")
-
-    // HOME 화면으로 이동할 때는 항상 하단 네비게이션을 숨김
-    val shouldHideBottomNav = hideBottomNav || route == Navigation.Main.HOME
 
     // 완전히 새로운 화면으로 이동하도록 설정
     navigate(route) {
@@ -81,8 +78,7 @@ fun NavController.navigateToMainTab(route: String, hideBottomNav: Boolean = fals
     }
 
     // 하단 네비게이션 숨김 상태를 ViewModel을 통해 저장
-    if (shouldHideBottomNav) {
-        val viewModel = BottomNavigationViewModel()
-        viewModel.setBottomNavVisibility(false)
+    if (hideBottomNav && bottomNavViewModel != null) {
+        bottomNavViewModel.setBottomNavVisibility(false)
     }
 }
