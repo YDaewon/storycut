@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -132,7 +133,20 @@ fun EditNicknameScreen(
                         }
                     }
                 ),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                        focusedLabelColor = Color(0xFFD0B699),
+                unfocusedLabelColor = Color.LightGray,
+                focusedBorderColor = Color(0xFFD0B699),
+                unfocusedBorderColor = Color.White,
+                focusedContainerColor = Color(0xFFFCF7F0),
+                unfocusedContainerColor = Color(0xFFFCF7F0),
+                cursorColor = Color(0xFFD0B699),
+                selectionColors = TextSelectionColors(
+                    handleColor = Color(0xFFD0B699),
+                    backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                    )
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -187,7 +201,7 @@ fun EditNicknameScreen(
                     ) {
                         Text(
                             text = "닉네임이 성공적으로 변경되었습니다.",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = Color(0xFFF4B3621),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

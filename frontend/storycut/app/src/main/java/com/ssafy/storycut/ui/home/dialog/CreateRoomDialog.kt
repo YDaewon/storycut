@@ -180,16 +180,14 @@ fun CreateRoomDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 0.dp),
-                    colors = TextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedLabelColor = Color.LightGray,
+                        focusedBorderColor = Color(0xFFD0B699),
+                        unfocusedBorderColor = Color.White,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        disabledContainerColor = Color(0xFFFCF7F0),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray,
+                        cursorColor = Color(0xFFD0B699),
                         selectionColors = TextSelectionColors(
                             handleColor = Color(0xFFD0B699),
                             backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
@@ -207,16 +205,14 @@ fun CreateRoomDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 0.dp),
-                    colors = TextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedLabelColor = Color.LightGray,
+                        focusedBorderColor = Color(0xFFD0B699),
+                        unfocusedBorderColor = Color.White,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        disabledContainerColor = Color(0xFFFCF7F0),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray,
+                        cursorColor = Color(0xFFD0B699),
                         selectionColors = TextSelectionColors(
                             handleColor = Color(0xFFD0B699),
                             backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
@@ -250,16 +246,14 @@ fun CreateRoomDialog(
                         .fillMaxWidth()
                         .height(120.dp)
                         .padding(horizontal = 0.dp),
-                    colors = TextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedLabelColor = Color.LightGray,
+                        focusedBorderColor = Color(0xFFD0B699),
+                        unfocusedBorderColor = Color.White,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        disabledContainerColor = Color(0xFFFCF7F0),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray,
+                        cursorColor = Color(0xFFD0B699),
                         selectionColors = TextSelectionColors(
                             handleColor = Color(0xFFD0B699),
                             backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)

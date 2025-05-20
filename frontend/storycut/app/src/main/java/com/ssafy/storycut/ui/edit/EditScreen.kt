@@ -220,12 +220,32 @@ fun EditScreen(
                     CircularProgressIndicator()
                 } else {
                     // 비디오가 선택되지 않은 경우 + 아이콘 표시
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "동영상 추가",
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.Black
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "동영상 추가",
+                            modifier = Modifier.size(40.dp),
+                            tint = Color(0xFF765a41)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))  // 간격 증가
+
+                        Text(
+                            text = "영상 선택",
+                            style = MaterialTheme.typography.titleMedium,  // 크기 증가
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF765a41)
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "영상 선택을 위해 클릭하세요",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color(0xFFD0B699).copy(alpha = 0.7f)
+                        )
+                    }
                 }
             }
 
@@ -378,6 +398,8 @@ fun EditScreen(
                         OutlinedTextField(
                             value = viewModel.musicPromptText,
                             onValueChange = { viewModel.updateMusicPromptText(it) },
+                            label = { Text("음악 분위기") },
+                            shape = RoundedCornerShape(8.dp),
                             placeholder = {
                                 if (viewModel.musicPromptText.isEmpty()) {
                                     Text(
@@ -389,25 +411,21 @@ fun EditScreen(
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(100.dp)
-                                .padding(horizontal = 16.dp)
-                                .shadow(
-                                    elevation = 4.dp,
-                                    shape = RoundedCornerShape(8.dp)
-                                )
-                                .background(Color(0xFFFCF7F0)),
+                                .height(110.dp)
+                                .padding(horizontal = 6.dp),
                             colors = OutlinedTextFieldDefaults.colors(
+                                focusedLabelColor = Color(0xFFD0B699),
+                                unfocusedLabelColor = Color.LightGray,
+                                focusedBorderColor = Color(0xFFD0B699),
                                 unfocusedBorderColor = Color.Transparent,
-                                focusedBorderColor = Color.Transparent,
-                                unfocusedContainerColor = Color(0xFFFCF7F0),
                                 focusedContainerColor = Color(0xFFFCF7F0),
-                                cursorColor = Color.LightGray,
+                                unfocusedContainerColor = Color(0xFFFCF7F0),
+                                cursorColor = Color(0xFFD0B699),
                                 selectionColors = TextSelectionColors(
                                     handleColor = Color(0xFFD0B699),
                                     backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
                                 )
-                            ),
-                            shape = RoundedCornerShape(8.dp)
+                            )
                         )
                     }
                 }
@@ -443,63 +461,60 @@ fun EditScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             // 영상 제목 입력 필드 (두 번째 파일에서 추가됨)
-            TextField(
+            OutlinedTextField(
                 value = viewModel.videoTitle,
                 onValueChange = { viewModel.updateVideoTitle(it) },
+                label = { Text("영상 제목") },
                 placeholder = { Text("영상 제목을 입력하세요", color = Color.LightGray) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
-                    .shadow(
-                        elevation = 4.dp,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .background(Color(0xFFFCF7F0)),
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.Black,
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true,
+                maxLines = 1,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedLabelColor = Color(0xFFD0B699),
+                    unfocusedLabelColor = Color.LightGray,
+                    focusedBorderColor = Color(0xFFD0B699),
+                    unfocusedBorderColor = Color.White,
                     focusedContainerColor = Color(0xFFFCF7F0),
                     unfocusedContainerColor = Color(0xFFFCF7F0),
-                    cursorColor = Color.LightGray,
+                    cursorColor = Color(0xFFD0B699),
                     selectionColors = TextSelectionColors(
                         handleColor = Color(0xFFD0B699),
                         backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
-                    ),
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(8.dp)
+                    )
+                )
             )
 
             // 프롬프트 입력 영역
             OutlinedTextField(
                 value = viewModel.promptText,
                 onValueChange = { viewModel.updatePromptText(it) },
-                placeholder = { Text("영상에 대한 프롬프트를 입력하세요", color = Color.LightGray) },
+                label = { Text("프롬프트") },
+                placeholder = { Text("프롬프트를 입력하세요", color = Color.LightGray) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .shadow(
-                        elevation = 4.dp,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .background(Color(0xFFFCF7F0))
-                    .height(120.dp),
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(8.dp),
+                singleLine = true,
+                maxLines = 1,
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                    focusedLabelColor = Color(0xFFD0B699),
+                    unfocusedLabelColor = Color.LightGray,
+                    focusedBorderColor = Color(0xFFD0B699),
+                    unfocusedBorderColor = Color.White,
                     focusedContainerColor = Color(0xFFFCF7F0),
-                    cursorColor = Color.LightGray,
+                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                    cursorColor = Color(0xFFD0B699),
                     selectionColors = TextSelectionColors(
                         handleColor = Color(0xFFD0B699),
                         backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
                     )
-                ),
-                shape = RoundedCornerShape(8.dp)
+                )
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             // 편집하기 버튼
             Button(

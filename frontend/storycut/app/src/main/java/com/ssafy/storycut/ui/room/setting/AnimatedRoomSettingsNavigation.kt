@@ -12,6 +12,7 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ssafy.storycut.ui.room.RoomViewModel
 import com.ssafy.storycut.ui.room.setting.AnimatedRoomEditNavigation
+import com.ssafy.storycut.ui.room.setting.RoomSettingScreen
 
 @Composable
 fun AnimatedRoomSettingsNavigation(

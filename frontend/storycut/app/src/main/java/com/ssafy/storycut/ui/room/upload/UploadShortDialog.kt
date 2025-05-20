@@ -1,4 +1,4 @@
-package com.ssafy.storycut.ui.room.dialog
+package com.ssafy.storycut.ui.room.upload
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -124,23 +124,21 @@ fun UploadShortDialog(
                 OutlinedTextField(
                     value = title,
                     onValueChange = { title = it },
-                    label = { Text("제목", color=Color.LightGray)},
+                    label = { Text("제목") },
                     placeholder = { Text("쇼츠 제목을 입력하세요", color = Color.LightGray) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp),
                     singleLine = true,
                     maxLines = 1,
-                    colors = TextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedLabelColor = Color.LightGray,
+                        focusedBorderColor = Color(0xFFD0B699),
+                        unfocusedBorderColor = Color.White,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        disabledContainerColor = Color(0xFFFCF7F0),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray,
+                        cursorColor = Color(0xFFD0B699),
                         selectionColors = TextSelectionColors(
                             handleColor = Color(0xFFD0B699),
                             backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)

@@ -381,27 +381,23 @@ fun ShortsScreen(
                     OutlinedTextField(
                         value = title,
                         onValueChange = { title = it },
-                        label = { Text("쇼츠 제목", color = Color.LightGray) },
-                        placeholder = { Text("제목을 입력하세요", color = Color.LightGray) },
+                        label = { Text("쇼츠 제목") },
+                        placeholder = { Text("쇼츠 제목을 입력하세요", color = Color.LightGray) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .shadow(
-                                elevation = 4.dp,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .background(Color(0xFFFCF7F0)),
-                        enabled = !isActionLoading,
+                            .height(70.dp)
+                            .padding(horizontal = 0.dp),
                         singleLine = true,
-                        shape = RoundedCornerShape(8.dp),
-                        textStyle = MaterialTheme.typography.bodyLarge,
+                        maxLines = 1,
+                        shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedContainerColor = Color(0xFFFCF7F0),
-                            focusedContainerColor = Color(0xFFFCF7F0),
-                            cursorColor = Color.LightGray,
-                            focusedLabelColor = Color.LightGray,
+                            focusedLabelColor = Color(0xFFD0B699),
                             unfocusedLabelColor = Color.LightGray,
+                            focusedBorderColor = Color(0xFFD0B699),
+                            unfocusedBorderColor = Color.White,
+                            focusedContainerColor = Color(0xFFFCF7F0),
+                            unfocusedContainerColor = Color(0xFFFCF7F0),
+                            cursorColor = Color(0xFFD0B699),
                             selectionColors = TextSelectionColors(
                                 handleColor = Color(0xFFD0B699),
                                 backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
@@ -413,28 +409,23 @@ fun ShortsScreen(
                     OutlinedTextField(
                         value = description,
                         onValueChange = { description = it },
-                        label = { Text("쇼츠 설명", color = Color.LightGray) },
-                        placeholder = { Text("설명을 입력하세요", color = Color.LightGray) },
+                        label = { Text("쇼츠 설명") },
+                        placeholder = { Text("쇼츠 설명을 입력하세요", color = Color.LightGray) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(120.dp)
-                            .shadow(
-                                elevation = 4.dp,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .background(Color(0xFFFCF7F0)),
-                        enabled = !isActionLoading,
-                        maxLines = 5,
-                        shape = RoundedCornerShape(8.dp),
-                        textStyle = MaterialTheme.typography.bodyLarge,
+                            .height(70.dp)
+                            .padding(horizontal = 0.dp),
+                        singleLine = true,
+                        maxLines = 1,
+                        shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedContainerColor = Color(0xFFFCF7F0),
-                            focusedContainerColor = Color(0xFFFCF7F0),
-                            cursorColor = Color.LightGray,
-                            focusedLabelColor = Color.LightGray,
+                            focusedLabelColor = Color(0xFFD0B699),
                             unfocusedLabelColor = Color.LightGray,
+                            focusedBorderColor = Color(0xFFD0B699),
+                            unfocusedBorderColor = Color.White,
+                            focusedContainerColor = Color(0xFFFCF7F0),
+                            unfocusedContainerColor = Color(0xFFFCF7F0),
+                            cursorColor = Color(0xFFD0B699),
                             selectionColors = TextSelectionColors(
                                 handleColor = Color(0xFFD0B699),
                                 backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
@@ -456,27 +447,23 @@ fun ShortsScreen(
                             OutlinedTextField(
                                 value = tagInput,
                                 onValueChange = { tagInput = it },
-                                label = { Text("태그", color = Color.LightGray) },
+                                label = { Text("태그") },
                                 placeholder = { Text("태그를 입력하세요", color = Color.LightGray) },
                                 modifier = Modifier
                                     .weight(1f)
-                                    .shadow(
-                                        elevation = 4.dp,
-                                        shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .background(Color(0xFFFCF7F0)),
-                                enabled = !isActionLoading,
+                                    .height(70.dp)
+                                    .padding(horizontal = 0.dp),
                                 singleLine = true,
-                                shape = RoundedCornerShape(8.dp),
-                                textStyle = MaterialTheme.typography.bodyLarge,
+                                maxLines = 1,
+                                shape = RoundedCornerShape(12.dp),
                                 colors = OutlinedTextFieldDefaults.colors(
-                                    unfocusedBorderColor = Color.Transparent,
-                                    focusedBorderColor = Color.Transparent,
-                                    unfocusedContainerColor = Color(0xFFFCF7F0),
-                                    focusedContainerColor = Color(0xFFFCF7F0),
-                                    cursorColor = Color.LightGray,
-                                    focusedLabelColor = Color.LightGray,
+                                    focusedLabelColor = Color(0xFFD0B699),
                                     unfocusedLabelColor = Color.LightGray,
+                                    focusedBorderColor = Color(0xFFD0B699),
+                                    unfocusedBorderColor = Color.White,
+                                    focusedContainerColor = Color(0xFFFCF7F0),
+                                    unfocusedContainerColor = Color(0xFFFCF7F0),
+                                    cursorColor = Color(0xFFD0B699),
                                     selectionColors = TextSelectionColors(
                                         handleColor = Color(0xFFD0B699),
                                         backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
@@ -528,6 +515,8 @@ fun ShortsScreen(
                             }
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     // 업로드 버튼
                     Button(

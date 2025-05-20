@@ -52,16 +52,14 @@ fun EnterRoomDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 0.dp),
-                    colors = TextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedLabelColor = Color.LightGray,
+                        focusedBorderColor = Color(0xFFD0B699),
+                        unfocusedBorderColor = Color.White,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        disabledContainerColor = Color(0xFFFCF7F0),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray,
+                        cursorColor = Color(0xFFD0B699),
                         selectionColors = TextSelectionColors(
                             handleColor = Color(0xFFD0B699),
                             backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
@@ -85,20 +83,18 @@ fun EnterRoomDialog(
                     value = password,
                     onValueChange = { password = it },
                     label = { Text("비밀번호 (선택사항)") },
-                    placeholder = { Text("비밀번호가 있는 경우 입력하세요") },
+                    placeholder = { Text("비밀번호가 있는 경우 입력하세요", color = Color.LightGray) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
-                    colors = TextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedLabelColor = Color.LightGray,
+                        focusedBorderColor = Color(0xFFD0B699),
+                        unfocusedBorderColor = Color.White,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        disabledContainerColor = Color(0xFFFCF7F0),
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedLabelColor = Color.Gray,
-                        unfocusedLabelColor = Color.Gray,
-                        cursorColor = Color.LightGray,
+                        cursorColor = Color(0xFFD0B699),
                         selectionColors = TextSelectionColors(
                             handleColor = Color(0xFFD0B699),
                             backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)

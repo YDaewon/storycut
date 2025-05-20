@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -83,7 +84,6 @@ fun RoomEditScreen(
     }
 
     // 방 정보 업데이트 함수
-// 방 정보 업데이트 함수
     val updateRoomInfo = {
         room?.let {
             val updatedRoom = RoomDto(
@@ -184,20 +184,28 @@ fun RoomEditScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = roomTitle,
-                    onValueChange = {
-                        roomTitle = it
-                        titleError = false
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    placeholder = { Text("방 제목을 입력하세요 (필수)") },
+                    onValueChange = { roomTitle = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFFCF7F0)),
+                    placeholder = { Text("방 제목을 입력하세요 (필수)", color = Color.LightGray)},
                     singleLine = true,
                     isError = titleError,
                     supportingText = if (titleError) {
                         { Text("방 제목을 입력해주세요") }
                     } else null,
+                    shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFD0B699),
-                        focusedLabelColor = Color(0xFFD0B699)
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedContainerColor = Color(0xFFFCF7F0),
+                        focusedContainerColor = Color(0xFFFCF7F0),
+                        unfocusedBorderColor = Color.White,
+                        cursorColor = Color(0xFFD0B699),
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     )
                 )
 
@@ -218,15 +226,23 @@ fun RoomEditScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(120.dp),
-                    placeholder = { Text("방 설명을 입력하세요 (필수)") },
+                        .height(120.dp)
+                        .background(Color(0xFFFCF7F0)),
+                    placeholder = { Text("방 설명을 입력하세요 (필수)", color = Color.LightGray) },
                     isError = contextError,
                     supportingText = if (contextError) {
                         { Text("방 설명을 입력해주세요") }
                     } else null,
+                    shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFD0B699),
-                        focusedLabelColor = Color(0xFFD0B699)
+                        focusedLabelColor = Color(0xFFD0B699),
+                        unfocusedBorderColor = Color.White,
+                        cursorColor = Color(0xFFD0B699),
+                        selectionColors = TextSelectionColors(
+                            handleColor = Color(0xFFD0B699),
+                            backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                        )
                     )
                 )
 
@@ -251,7 +267,8 @@ fun RoomEditScreen(
                             checkedThumbColor = Color.White,
                             checkedTrackColor = Color(0xFFD0B699),
                             uncheckedThumbColor = Color.White,
-                            uncheckedTrackColor = Color.LightGray
+                            uncheckedTrackColor = Color.LightGray,
+                            uncheckedBorderColor = Color.Transparent
                         )
                     )
                 }
@@ -268,16 +285,25 @@ fun RoomEditScreen(
                                 roomPassword = it
                                 passwordError = false
                             },
-                            modifier = Modifier.fillMaxWidth(),
-                            placeholder = { Text("비밀번호를 입력하세요") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFFCF7F0)),
+                            placeholder = { Text("비밀번호를 입력하세요", color = Color.LightGray) },
                             singleLine = true,
                             isError = passwordError,
                             supportingText = if (passwordError) {
                                 { Text("비밀번호를 입력해주세요") }
                             } else null,
+                            shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = Color(0xFFD0B699),
-                                focusedLabelColor = Color(0xFFD0B699)
+                                focusedLabelColor = Color(0xFFD0B699),
+                                unfocusedBorderColor = Color.White,
+                                cursorColor = Color(0xFFD0B699),
+                                selectionColors = TextSelectionColors(
+                                    handleColor = Color(0xFFD0B699),
+                                    backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+                                )
                             )
                         )
                     }

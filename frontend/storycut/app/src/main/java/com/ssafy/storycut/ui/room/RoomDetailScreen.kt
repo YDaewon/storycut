@@ -46,12 +46,15 @@ import com.ssafy.storycut.data.api.model.chat.ChatDto
 import com.ssafy.storycut.data.local.datastore.TokenManager
 import com.ssafy.storycut.ui.mypage.VideoViewModel
 import com.ssafy.storycut.ui.room.dialog.ThumbnailEditDialog
-import com.ssafy.storycut.ui.room.dialog.UploadShortDialog
+import com.ssafy.storycut.ui.room.upload.UploadShortDialog
 import com.ssafy.storycut.ui.common.VideoSelectorFullScreenDialog
 import com.ssafy.storycut.ui.room.settings.AnimatedRoomSettingsNavigation
 import com.ssafy.storycut.ui.room.video.RoomVideoItem
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,6 +105,68 @@ fun RoomDetailScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
+    val customSelectionColors = TextSelectionColors(
+        handleColor = Color(0xFFD0B699),
+        backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
+    )
+
+    CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
+        BasicTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            textStyle = LocalTextStyle.current.copy(
+                fontSize = 14.sp,
+                color = Color.Black
+            ),
+            singleLine = true,
+            cursorBrush = SolidColor(Color(0xFFD0B699)),
+            decorationBox = { innerTextField ->
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "검색",
+                        tint = Color.Gray,
+                        modifier = Modifier.size(20.dp)
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        if (searchQuery.isEmpty()) {
+                            Text(
+                                "쇼츠 검색",
+                                color = Color.Gray.copy(alpha = 0.7f),
+                                fontSize = 14.sp
+                            )
+                        }
+                        innerTextField()
+                    }
+
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(
+                            onClick = { searchQuery = "" },
+                            modifier = Modifier.size(32.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = "지우기",
+                                tint = Color.Gray,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        )
+    }
 
     // 이미지 선택기를 위한 런처
     val imagePickerLauncher = rememberLauncherForActivityResult(
@@ -488,61 +553,63 @@ fun RoomDetailScreen(
                                     color = Color.White,
                                     tonalElevation = 2.dp
                                 ) {
-                                    BasicTextField(
-                                        value = searchQuery,
-                                        onValueChange = { searchQuery = it },
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(48.dp),
-                                        textStyle = LocalTextStyle.current.copy(
-                                            fontSize = 14.sp,
-                                            color = Color.Black
-                                        ),
-                                        singleLine = true,
-                                        cursorBrush = SolidColor(Color(0xFFFCF7F0)),
-                                        decorationBox = { innerTextField ->
-                                            Row(
-                                                modifier = Modifier.padding(horizontal = 12.dp),
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Default.Search,
-                                                    contentDescription = "검색",
-                                                    tint = Color.Gray,
-                                                    modifier = Modifier.size(20.dp)
-                                                )
-
-                                                Box(
-                                                    modifier = Modifier
-                                                        .weight(1f)
-                                                        .padding(horizontal = 8.dp)
+                                    CompositionLocalProvider(LocalTextSelectionColors provides customSelectionColors) {
+                                        BasicTextField(
+                                            value = searchQuery,
+                                            onValueChange = { searchQuery = it },
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(48.dp),
+                                            textStyle = LocalTextStyle.current.copy(
+                                                fontSize = 14.sp,
+                                                color = Color.Black
+                                            ),
+                                            singleLine = true,
+                                            cursorBrush = SolidColor(Color(0xFFD0B699)),
+                                            decorationBox = { innerTextField ->
+                                                Row(
+                                                    modifier = Modifier.padding(horizontal = 12.dp),
+                                                    verticalAlignment = Alignment.CenterVertically
                                                 ) {
-                                                    if (searchQuery.isEmpty()) {
-                                                        Text(
-                                                            "쇼츠 검색",
-                                                            color = Color.Gray.copy(alpha = 0.7f),
-                                                            fontSize = 14.sp
-                                                        )
-                                                    }
-                                                    innerTextField()
-                                                }
+                                                    Icon(
+                                                        imageVector = Icons.Default.Search,
+                                                        contentDescription = "검색",
+                                                        tint = Color.Gray,
+                                                        modifier = Modifier.size(20.dp)
+                                                    )
 
-                                                if (searchQuery.isNotEmpty()) {
-                                                    IconButton(
-                                                        onClick = { searchQuery = "" },
-                                                        modifier = Modifier.size(32.dp)
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .weight(1f)
+                                                            .padding(horizontal = 8.dp)
                                                     ) {
-                                                        Icon(
-                                                            imageVector = Icons.Default.Clear,
-                                                            contentDescription = "지우기",
-                                                            tint = Color.Gray,
-                                                            modifier = Modifier.size(16.dp)
-                                                        )
+                                                        if (searchQuery.isEmpty()) {
+                                                            Text(
+                                                                "쇼츠 검색",
+                                                                color = Color.Gray.copy(alpha = 0.7f),
+                                                                fontSize = 14.sp
+                                                            )
+                                                        }
+                                                        innerTextField()
+                                                    }
+
+                                                    if (searchQuery.isNotEmpty()) {
+                                                        IconButton(
+                                                            onClick = { searchQuery = "" },
+                                                            modifier = Modifier.size(32.dp)
+                                                        ) {
+                                                            Icon(
+                                                                imageVector = Icons.Default.Clear,
+                                                                contentDescription = "지우기",
+                                                                tint = Color.Gray,
+                                                                modifier = Modifier.size(16.dp)
+                                                            )
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
                             }
                         }

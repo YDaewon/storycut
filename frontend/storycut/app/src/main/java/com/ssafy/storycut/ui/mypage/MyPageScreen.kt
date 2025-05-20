@@ -202,7 +202,7 @@ fun MyPageScreen(
                         unfocusedIndicatorColor = Color.Transparent,
                         focusedContainerColor = Color(0xFFFCF7F0),
                         unfocusedContainerColor = Color(0xFFFCF7F0),
-                        cursorColor = Color.LightGray,
+                        cursorColor = Color(0xFFD0B699),
                         selectionColors = TextSelectionColors(
                             handleColor = Color(0xFFD0B699),
                             backgroundColor = Color(0xFFD0B699).copy(alpha = 0.3f)
@@ -217,7 +217,7 @@ fun MyPageScreen(
                     },
                     placeholder = {
                         Text(
-                            "사진 검색하기",
+                            "영상 검색하기",
                             color = Color(0xFFAAAAAA)
                         )
                     },

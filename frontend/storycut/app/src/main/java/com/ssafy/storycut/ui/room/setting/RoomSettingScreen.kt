@@ -1,4 +1,4 @@
-package com.ssafy.storycut.ui.room.settings
+package com.ssafy.storycut.ui.room.setting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -139,7 +139,7 @@ fun RoomSettingItem(
     val textColor = if (isWarning) {
         Color(0xFFD0B699) // 앱 테마 색상으로 변경
     } else {
-        MaterialTheme.colorScheme.onSurface
+        Color.DarkGray
     }
 
     Row(
