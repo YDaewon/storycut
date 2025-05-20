@@ -32,13 +32,15 @@ class ImageUploadResponse(BaseModel):
 class VideoUploadRequest(BaseModel):
     video_title: str = Field(..., alias="videoTitle", example="고양이 브이로그")
     video_url: str = Field(..., alias="videoUrl", example="https://blob.core.windows.net/container/abcd1234.mp4")
+    thumbnail_url: str = Field(..., alias="thumbnailUrl", example="https://blob.core.windows.net/container/abcd1234.jpg")
 
     class Config:
         allow_population_by_field_name = True
         schema_extra = {
             "example": {
                 "videoTitle": "고양이 브이로그",
-                "videoUrl": "https://blob.core.windows.net/container/abcd1234.mp4"
+                "videoUrl": "https://blob.core.windows.net/container/abcd1234.mp4",
+                "thumbnailUrl": "https://blob.core.windows.net/container/abcd1234.jpg"
             }
         }
 

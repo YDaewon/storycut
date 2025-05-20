@@ -101,7 +101,7 @@ async def upload_video(
         # 3. 완료 전송
         complete_payload = CompleteRequest(
             video_id=spring_upload.result,
-            thumbnail="thumbnail_url",
+            thumbnail=request.thumbnail_url,
             video_url=request.video_url
         )
         spring_response = await post_video_to_springboot_complete(token, complete_payload)
