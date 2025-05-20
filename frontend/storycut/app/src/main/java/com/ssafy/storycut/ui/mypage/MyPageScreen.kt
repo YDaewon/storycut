@@ -136,6 +136,7 @@ fun MyPageScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .zIndex(if (showSettings) 0f else 1f)
         ) {
             // 설정 아이콘

@@ -1,6 +1,7 @@
 package com.ssafy.storycut.ui.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
@@ -30,6 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
@@ -61,8 +64,8 @@ class CustomNavigationShape(private val selectedIndex: Int, private val totalIte
         val itemWidth = size.width / totalItems
         val centerX = itemWidth * (selectedIndex + 0.5f)
         val circleRadius = 24.dp.value * density.density
-        val curveDepth = 40.dp.value * density.density
-        val curveWidth = 92.dp.value * density.density
+        val curveDepth = 24.dp.value * density.density
+        val curveWidth = 64.dp.value * density.density
         val cornerRadius = 24.dp.value * density.density  // 모서리 둥글기 설정
 
         // 시작점 (왼쪽 상단 모서리)
@@ -199,6 +202,7 @@ fun MainScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        containerColor = Color.White,
         bottomBar = {
             if (!isVideoDetailScreen && isBottomNavVisible) {
                 Box(
@@ -212,15 +216,15 @@ fun MainScreen(
                             .fillMaxWidth()
                             .shadow(
                                 elevation = 32.dp,
-                                spotColor = Color(0xFF000000).copy(alpha = 1.00f),  // 그림자 더 진하게
-                                ambientColor = Color(0xFF000000).copy(alpha = 1.00f),  // 주변 그림자도 더 진하게
-                                shape = CustomNavigationShape(selectedIndex, items.size)
+                                spotColor = Color(0xFF000000).copy(alpha = 1.00f),
+                                ambientColor = Color(0xFF000000).copy(alpha = 1.00f),
+                                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
                             )
                             .background(
-                                color = Color.White.copy(alpha = 0.95f),
-                                shape = CustomNavigationShape(selectedIndex, items.size)
+                                color = Color.White,
+                                shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
                             )
-                            .height(64.dp)
+                            .height(56.dp)
                             .zIndex(11f)
                     )
 
@@ -228,13 +232,13 @@ fun MainScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(64.dp)
+                            .height(56.dp)
                             .zIndex(13f)
                     ) {
                         NavigationBar(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(64.dp),
+                                .height(56.dp),
                             containerColor = Color.Transparent,
                             tonalElevation = 0.dp
                         ) {
@@ -280,8 +284,8 @@ fun MainScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(64.dp)
-                            .zIndex(14f)
+                            .height(56.dp)
+                            .zIndex(20f)
                     ) {
                         items.forEachIndexed { index, item ->
                             if (currentRoute == item.route) {
@@ -294,33 +298,47 @@ fun MainScreen(
                                         ),
                                     contentAlignment = Alignment.Center
                                 ) {
+                                    // Glow 효과를 위한 바깥쪽 흐릿한 밝은 원
                                     Box(
                                         modifier = Modifier
                                             .offset(y = (-16).dp)
+                                            .size(68.dp)
+                                            .zIndex(21f)
+                                            .background(
+                                                color = Color.White.copy(alpha = 0.35f),
+                                                shape = CircleShape
+                                            ),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        // 실제 선택된 아이콘(동그란 버튼)
+                                        Box(
+                                            modifier = Modifier
+                                                .size(56.dp)
                                             .shadow(
-                                                elevation = 16.dp,
+                                                    elevation = 32.dp,
                                                 shape = CircleShape,
-                                                spotColor = Color.Black.copy(alpha = 0.25f),
-                                                ambientColor = Color.Black.copy(alpha = 0.2f)
+                                                    clip = false,
+                                                    ambientColor = Color.Black.copy(alpha = 0.18f),
+                                                    spotColor = Color.Black.copy(alpha = 0.18f)
                                             )
-                                            .shadow(
-                                                elevation = 8.dp,
-                                                shape = CircleShape,
-                                                spotColor = Color.Black.copy(alpha = 0.35f),
-                                                ambientColor = Color.Black.copy(alpha = 0.3f)
-                                            )
-                                            .size(48.dp)
                                             .clip(CircleShape)
-                                            .background(Color(0xFFD0B699))
-                                            .padding(12.dp),
+                                                .background(
+                                                    brush = Brush.verticalGradient(
+                                                        colors = listOf(
+                                                            Color(0xFFF5E6C5),
+                                                            Color(0xFFD0B699)
+                                                        )
+                                                    )
+                                                ),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
                                             item.icon,
                                             contentDescription = item.title,
                                             tint = Color.White,
-                                            modifier = Modifier.size(24.dp)
+                                                modifier = Modifier.size(28.dp)
                                         )
+                                        }
                                     }
                                 }
                             }
@@ -355,7 +373,8 @@ fun MainScreen(
                         navController = navController,
                         authViewModel = authViewModel,
                         tokenManager = tokenManager,
-                        onNavigateToLogin = onNavigateToLogin
+                        onNavigateToLogin = onNavigateToLogin,
+                        innerPadding = innerPadding
                     )
                 }
             }

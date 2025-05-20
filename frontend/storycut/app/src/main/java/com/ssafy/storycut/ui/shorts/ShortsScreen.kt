@@ -171,7 +171,8 @@ fun ShortsScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 24.dp, vertical = 20.dp)  // 패딩 증가
+                        .background(Color.White)
+                        .padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 0.dp)
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)  // 요소 간 일정한 간격 적용
@@ -335,7 +336,7 @@ fun ShortsScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .background(Color(0xFFFCF7F0)),
+                                        .background(Color.White),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column(
@@ -345,7 +346,7 @@ fun ShortsScreen(
                                             imageVector = Icons.Default.Add,
                                             contentDescription = null,
                                             modifier = Modifier.size(56.dp),  // 크기 증가
-                                            tint = Color(0xFFD0B699)
+                                            tint = Color(0xFF765a41)
                                         )
 
                                         Spacer(modifier = Modifier.height(8.dp))  // 간격 증가
@@ -354,7 +355,7 @@ fun ShortsScreen(
                                             text = "비디오 선택",
                                             style = MaterialTheme.typography.titleMedium,  // 크기 증가
                                             fontWeight = FontWeight.Bold,
-                                            color = Color(0xFFD0B699)
+                                            color = Color(0xFF765a41)
                                         )
 
                                         Spacer(modifier = Modifier.height(4.dp))

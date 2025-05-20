@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,13 +45,16 @@ import com.ssafy.storycut.ui.common.VideoUploadDialog
 import com.ssafy.storycut.ui.common.VideoSelectorFullScreenDialog
 import com.ssafy.storycut.ui.edit.dialog.MusicSelectionDialog
 import com.ssafy.storycut.ui.mypage.VideoViewModel
+import com.ssafy.storycut.ui.navigation.BottomNavigationViewModel
 import kotlinx.coroutines.flow.collectLatest
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun EditScreen(
     viewModel: EditViewModel,
     videoViewModel: VideoViewModel,
-    onEditSuccess: (String) -> Unit
+    bottomNavViewModel: BottomNavigationViewModel = hiltViewModel(),
+    onEditSuccess: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
@@ -68,6 +72,9 @@ fun EditScreen(
 
     // 배경 음악 선택 다이얼로그 상태 변수 추가
     var showBackgroundMusicDialog by remember { mutableStateOf(false) }
+
+    // 하단 네비게이션 표시 여부
+    val isBottomNavVisible by bottomNavViewModel.isBottomNavVisible.observeAsState(true)
 
     // 오류 메시지 표시를 위한 효과
     LaunchedEffect(viewModel.error) {
@@ -148,7 +155,8 @@ fun EditScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .background(Color.White)
+                .padding(start = 6.dp, end = 6.dp, top =16.dp, bottom = 0.dp)
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -158,7 +166,7 @@ fun EditScreen(
                 text = "영상 편집",
                 fontSize = 16.sp,
                 color = Color.Black,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 textAlign = TextAlign.Center
             )
 
@@ -168,7 +176,7 @@ fun EditScreen(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
-                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
             )
 
             // 동영상 업로드 영역 - 선택된 비디오 썸네일 표시 또는 + 아이콘
@@ -176,6 +184,7 @@ fun EditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(16f / 9f)
+                    .padding(horizontal = 16.dp)
                     .shadow(
                         elevation = 8.dp,
                         shape = RoundedCornerShape(12.dp),
@@ -222,7 +231,7 @@ fun EditScreen(
 
             // 구분선
             HorizontalDivider(
-                modifier = Modifier.padding(vertical = 8.dp),
+                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
                 color = Color.LightGray
             )
 
@@ -230,12 +239,13 @@ fun EditScreen(
             if (viewModel.hasMosaic) {
                 OptionalSection(
                     title = "모자이크",
-                    onRemove = { viewModel.toggleMosaic(false) }
+                    onRemove = { viewModel.toggleMosaic(false) },
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp)
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Text("제외할 인물을 올려 주세요", fontSize = 12.sp, color = Color.Gray)
 
@@ -320,31 +330,39 @@ fun EditScreen(
                         }
                     }
                 }
-                HorizontalDivider(color = Color.LightGray)
+                HorizontalDivider(
+                    color = Color.LightGray,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
 
             // 한국어 자막 옵션 (조건부 표시)
             if (viewModel.applySubtitle) {
                 OptionalSection(
                     title = "한국어 자막",
-                    onRemove = { viewModel.toggleKoreanSubtitle(false) }
+                    onRemove = { viewModel.toggleKoreanSubtitle(false) },
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     // 자막 설정 영역 내용
                     Text(
                         "한국어 자막이 자동으로 생성됩니다.",
                         fontSize = 12.sp,
                         color = Color.Gray,
-                        modifier = Modifier.padding(vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                 }
-                HorizontalDivider(color = Color.LightGray)
+                HorizontalDivider(
+                    color = Color.LightGray,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
 
             // 배경 음악 옵션 (조건부 표시)
             if (viewModel.hasBackgroundMusic) {
                 OptionalSection(
                     title = "배경 음악",
-                    onRemove = { viewModel.toggleBackgroundMusic(false) }
+                    onRemove = { viewModel.toggleBackgroundMusic(false) },
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     // 자동 음악 생성 모드일 때와 프롬프트 모드일 때 다른 UI 표시
                     if (viewModel.autoMusic) {
@@ -353,7 +371,7 @@ fun EditScreen(
                             "영상 내용에 맞는 배경 음악이 자동으로 생성됩니다.",
                             fontSize = 12.sp,
                             color = Color.Gray,
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                         )
                     } else {
                         // 프롬프트 음악 생성 모드
@@ -372,6 +390,7 @@ fun EditScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(100.dp)
+                                .padding(horizontal = 16.dp)
                                 .shadow(
                                     elevation = 4.dp,
                                     shape = RoundedCornerShape(8.dp)
@@ -392,7 +411,10 @@ fun EditScreen(
                         )
                     }
                 }
-                HorizontalDivider(color = Color.LightGray)
+                HorizontalDivider(
+                    color = Color.LightGray,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))  // 간격 추가
@@ -404,7 +426,8 @@ fun EditScreen(
                     onClick = { showOptionDialog = true },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(48.dp)
+                        .padding(horizontal = 16.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFD0B699)
                     ),
@@ -426,7 +449,7 @@ fun EditScreen(
                 placeholder = { Text("영상 제목을 입력하세요", color = Color.LightGray) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp)
+                    .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
                     .shadow(
                         elevation = 4.dp,
                         shape = RoundedCornerShape(8.dp)
@@ -455,6 +478,7 @@ fun EditScreen(
                 placeholder = { Text("영상에 대한 프롬프트를 입력하세요", color = Color.LightGray) },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
                     .shadow(
                         elevation = 4.dp,
                         shape = RoundedCornerShape(8.dp)
@@ -496,7 +520,8 @@ fun EditScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(48.dp)
+                    .padding(horizontal = 16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFD0B699),
                     disabledContainerColor = Color(0xFFD0B699).copy(alpha = 0.5f)
@@ -607,10 +632,13 @@ fun EditScreen(
 fun OptionalSection(
     title: String,
     onRemove: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .then(modifier)
     ) {
         // 제목 및 제거 버튼
         Row(

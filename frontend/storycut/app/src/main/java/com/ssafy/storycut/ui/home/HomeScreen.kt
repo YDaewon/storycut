@@ -142,7 +142,7 @@ fun HomeScreen(
             // 전체 콘텐츠를 하나의 LazyColumn으로 구성
             LazyColumn(
                 state = lazyListState,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().background(Color.White),
                 contentPadding = PaddingValues(bottom = 16.dp)
             ) {
                 // 상단 영역 (FCF7F0 + 곡선)
