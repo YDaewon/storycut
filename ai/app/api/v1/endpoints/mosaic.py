@@ -59,7 +59,7 @@ async def process_video_from_json(
                 request,
                 video_info.result.video_url,
                 device_token,
-                spring_response.result  # video_id
+                spring_response.result
             )
         )
 

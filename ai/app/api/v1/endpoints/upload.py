@@ -21,12 +21,15 @@ from app.api.v1.services.springboot_service import (
 from app.api.v1.schemas.upload_schema import (
     ImageUploadResponse, ErrorResponse,
     ImageUploadResult, VideoUploadResponse,
-    RoomThumbnailResponse, RoomThumbnailResult
+    RoomThumbnailResponse, RoomThumbnailResult,VideoUploadRequest
 )
 from app.api.v1.schemas.post_schema import CompleteRequest, UploadRequest
+from app.api.v1.services.video_service import download_video_to_local
+
 
 router = APIRouter()
-
+VIDEO_DIR = "app/videos"
+os.makedirs(VIDEO_DIR, exist_ok=True)
 
 # 이미지 업로드
 @router.post(
@@ -63,65 +66,65 @@ async def upload_images(files: List[UploadFile] = File(...)):
 @router.post(
     "/videos",
     response_model=VideoUploadResponse,
-    responses={400: {"model": ErrorResponse, "description": "영상 업로드 실패"}},
-    summary="영상 업로드"
+    responses={400: {"model": ErrorResponse, "description": "영상 등록 실패"}},
+    summary="Azure 업로드 후 영상 등록"
 )
+
+
 async def upload_video(
-    file: UploadFile = File(...),
-    video_title: str = Form(...),
+    request: VideoUploadRequest,
     authorization: str = Header(..., alias="Authorization")
 ):
     token = authorization.replace("Bearer ", "")
     try:
-        logger.info(f"[영상 업로드 시작] 제목: {video_title}, 파일명: {file.filename}")
+        logger.info(f"[영상 등록 시작] 제목: {request.video_title}, 주소: {request.video_url}")
 
-        local_path = await save_uploaded_video_local(file)
-        video_name = os.path.basename(local_path)
-        logger.info(f"[로컬 저장 완료] 경로: {local_path}")
+        # 1. 썸네일 생성 (Azure 주소에서 추출)
 
-        thumbnail_url = await generate_and_upload_thumbnail(local_path)
-        logger.info(f"[썸네일 생성 완료] URL: {thumbnail_url}")
+        # filename = os.path.basename(request.video_url)
+        # local_path = os.path.join(VIDEO_DIR, filename)
 
-        s3_url = await save_uploaded_video(local_path, video_name)
-        logger.info(f"[S3 업로드 완료] URL: {s3_url}")
+        # await download_video_to_local(request.video_url, local_path)
+        # thumbnail_url = await generate_and_upload_thumbnail(local_path)
+        # logger.info(f"[썸네일 생성 완료] URL: {thumbnail_url}")
 
-        payload = UploadRequest(
-            video_title=video_title,
+        # 2. Spring 서버 업로드 등록
+        upload_payload = UploadRequest(
+            video_title=request.video_title,
             original_video_id=None,
-            is_blur=False,
+            is_blur=False
         )
 
-        id = await post_video_to_springboot_upload(token, payload)
-        logger.info(f"[Spring 업로드 등록 완료] video_id: {id.result}")
+        spring_upload = await post_video_to_springboot_upload(token, upload_payload)
+        logger.info(f"[Spring 등록 완료] video_id: {spring_upload.result}")
 
+        # 3. 완료 전송
         complete_payload = CompleteRequest(
-            video_id=id.result,
-            thumbnail=thumbnail_url,
-            video_url=s3_url,
+            video_id=spring_upload.result,
+            thumbnail=request.thumbnail_url,
+            video_url=request.video_url
         )
-
         spring_response = await post_video_to_springboot_complete(token, complete_payload)
-        logger.info(f"[Spring 완료 전송 성공] video_id: {id.result}")
+        logger.info(f"[Spring 완료 전송 성공] video_id: {spring_upload.result}")
 
         return VideoUploadResponse(
             is_success=True,
             code=200,
-            message="영상 업로드 성공",
+            message="영상 등록 성공",
             result=spring_response.result
         )
 
     except Exception:
-        logger.exception("[영상 업로드 실패]")
+        logger.exception("[영상 등록 실패]")
         return JSONResponse(
             status_code=400,
             content=ErrorResponse(
                 code=400,
-                message="영상이 업로드가 잘못되었습니다.",
+                message="영상 등록 중 오류 발생",
                 result=None
             ).dict(by_alias=True)
         )
-
-
+    
 # 룸 썸네일 이미지 업로드
 @router.post(
     "/room-thumbnails",
