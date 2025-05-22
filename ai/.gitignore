@@ -1,0 +1,53 @@
+# ▶️ Python 관련
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# ▶️ 가상환경
+venv/
+.env
+.env.*
+
+# ▶️ IDE 설정
+.vscode/
+.idea/
+
+# ▶️ OS/에디터 임시파일
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ▶️ 로그 및 캐시
+*.log
+*.db
+*.sqlite3
+*.pid
+*.tmp
+
+# ▶️ 파이썬 빌드 결과물
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ▶️ FastAPI static/media/uploads (선택적)
+app/subtitle/
+app/images/
+app/vimosaic/
+shortcut/backend/image/
+app/videos/
+# ▶️ 기타 테스트 결과
+htmlcov/
+coverage.xml
+pytest_cache/
+
+# ▶️ mypy/mkdocs/pytest/jupyter
+.mypy_cache/
+.ipynb_checkpoints/
+docs/_build/
+app/firebase/*
+!app/firebase/.gitkeep
