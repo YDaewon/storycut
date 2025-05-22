@@ -128,7 +128,7 @@ public interface RoomService {
      * @return 공유방 상세 정보를 담은 응답 객체
      * @throws com.storycut.global.exception.BusinessException 해당 공유방이 존재하지 않는 경우
      */
-    RoomResponse getRoomDetail(Long roomId);
+    RoomResponse getRoomDetail(Long memberId, Long roomId);
     
     /**
      * 공유방 참여자 목록을 조회합니다.

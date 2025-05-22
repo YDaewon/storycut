@@ -18,9 +18,10 @@ public class RoomResponse {
     private String roomThumbnail;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean isHost;
     private int memberCount;
     
-    public static RoomResponse from(Room publicRoom, int memberCount) {
+    public static RoomResponse from(Long memberId, Room publicRoom, int memberCount) {
         return RoomResponse.builder()
                 .roomId(publicRoom.getId())
                 .hostId(publicRoom.getHostId())
@@ -30,6 +31,7 @@ public class RoomResponse {
                 .hasPassword(publicRoom.getPassword() != null && !publicRoom.getPassword().isEmpty())
                 .createdAt(publicRoom.getCreatedAt())
                 .updatedAt(publicRoom.getUpdatedAt())
+                .isHost(publicRoom.isHost(memberId))
                 .memberCount(memberCount)
                 .build();
     }

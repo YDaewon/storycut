@@ -4,6 +4,7 @@ import com.storycut.domain.auth.model.CustomUserDetails;
 import com.storycut.domain.room.dto.request.RoomCreateRequest;
 import com.storycut.domain.room.dto.request.RoomInviteRequest;
 import com.storycut.domain.room.dto.request.RoomUpdateRequest;
+import com.storycut.domain.room.dto.request.UpdateThumbnailRequest;
 import com.storycut.domain.room.dto.response.RoomMemberResponse;
 import com.storycut.domain.room.dto.response.RoomResponse;
 import com.storycut.global.model.dto.BaseResponse;
@@ -107,7 +108,7 @@ public interface RoomAPI {
     ResponseEntity<BaseResponse<RoomResponse>> updateThumbnail(
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails authUser,
         @Parameter(description = "수정할 공유방 ID", required = true) @RequestParam Long roomId,
-        @Valid @RequestBody String thumbnail);
+        @Valid @RequestBody UpdateThumbnailRequest dto);
 
     /**
      * 공유방 삭제 API
@@ -220,6 +221,7 @@ public interface RoomAPI {
     })
     @GetMapping("/detail/{roomId}")
     ResponseEntity<BaseResponse<RoomResponse>> getRoomDetail(
+        @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails authUser,
         @Parameter(description = "조회할 공유방 ID", required = true) @PathVariable Long roomId);
 
     /**

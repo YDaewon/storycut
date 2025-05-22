@@ -1,76 +1,183 @@
-## Git 컨벤션
+ # 🎬 StoryCut
 
-| 브랜치       | 역할                                      |
-|--------------|-------------------------------------------|
-| `main`       | 실제 운영 중인 코드 (배포된 코드)         |
-| `develop`    | 다음 버전 배포를 위한 통합 개발 브랜치    |
-| `feature/*`  | 새로운 기능을 개발할 때 사용하는 브랜치   |
-| `release/*`  | 배포 준비를 위한 브랜치 (버그 수정, QA 등)|
-| `hotfix/*`   | 운영 중 발견된 긴급 수정을 반영하는 브랜치|
+#### AI 기반 영상 편집 및 공유 플랫폼
+
+> 2025.04.14 ~ 2025.05.22
+
+<br>
+
+---
+
+1. **[웹 서비스 소개](#1-웹-서비스-소개)**
+2. **[기술 스택](#2-기술-스택)**
+3. **[주요 기능](#3-주요-기능)**
+4. **[시스템 아키텍처](#4-시스템-아키텍처)**
+5. **[서비스 화면](#5-서비스-화면)**
+6. **[개발 팀 소개](#6-개발-팀-소개)**
+
+## 1. 웹 서비스 소개
+
+### ✨ StoryCut: AI 기반 영상 편집 및 공유 플랫폼
+
+영상 편집이 어렵고 시간이 많이 걸리는 경험을 해보셨나요?
+StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요!
+
+#### 🌟 StoryCut만의 특별함
+
+- 프롬프트 기반 지능형 컷 편집: 사용자의 프롬프트를 분석하여 원하는 영상 구간을 자동으로 추출
+- 멀티모달 AI 통합 시스템: mmaction2와 OpenCV를 활용한 고급 영상 분석
+- 선택적 프라이버시 보호: 특정 인물만 선택적으로 보존하고 나머지는 자동 모자이크 처리
+
+#### 💡 이런 분들에게 완벽해요
+
+- 영상 편집에 익숙하지 않은 초보자
+- 빠른 시간 내에 고품질 영상을 제작하고 싶은 콘텐츠 크리에이터
+- 프라이버시 보호가 필요한 영상 편집이 필요한 사용자
+
+## 2. 기술 스택
+
+### **Backend**
+
+<img src="https://img.shields.io/badge/Java 17-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot 3.4.4-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img src="https://img.shields.io/badge/FastAPI 0.95.2-009688?style=for-the-badge&logo=FastAPI&logoColor=white"> <img src="https://img.shields.io/badge/Python 3.8-3776AB?style=for-the-badge&logo=Python&logoColor=white">
+
+### **Database**
+
+<img src="https://img.shields.io/badge/MySQL 8.0.41-4479A1?style=for-the-badge&logo=MySQL&logoColor=white"> <img src="https://img.shields.io/badge/Redis 8.0.0-DC382D?style=for-the-badge&logo=Redis&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB 8.0.9-47A248?style=for-the-badge&logo=MongoDB&logoColor=white">
+
+### **Infrastructure**
+
+<img src="https://img.shields.io/badge/Ubuntu 20.04-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white"> <img src="https://img.shields.io/badge/Docker 26.1.3-2496ED?style=for-the-badge&logo=Docker&logoColor=white"> <img src="https://img.shields.io/badge/Jenkins 2.504.1-D24939?style=for-the-badge&logo=Jenkins&logoColor=white"> <img src="https://img.shields.io/badge/Nginx 1.27.5-009639?style=for-the-badge&logo=NGINX&logoColor=white">
+
+### **Monitoring**
+
+<img src="https://img.shields.io/badge/Prometheus 3.3.1-E6522C?style=for-the-badge&logo=Prometheus&logoColor=white"> <img src="https://img.shields.io/badge/Loki 2.9.3-F7B93E?style=for-the-badge&logo=Loki&logoColor=white"> <img src="https://img.shields.io/badge/Grafana 12.0.0-F46800?style=for-the-badge&logo=Grafana&logoColor=white"> <img src="https://img.shields.io/badge/ELK 8.7.0-005571?style=for-the-badge&logo=Elastic&logoColor=white">
+
+## 3. 주요 기능
+
+| 기능 | 설명 | 관련 기술 |
+|:---:|:---|:---|
+| **프롬프트 기반 영상 컷 편집** | 사용자의 프롬프트를 분석하여 원하는 영상 구간을 자동으로 추출 | Gemini API, mmaction2 |
+| **유튜브 파이프라인** | 완성된 영상을 유튜브에 자동 업로드 | YouTube API 연동 |
+| **영상 공간 공유** | 완성된 영상을 지인과 공유할 수 있는 공간 제공 | 클라우드 스토리지 |
+| **선택적 인물 모자이크** | 지정한 특정 인물을 제외한 나머지 인물 자동 모자이크 처리 | DeepSort,  InsightFace |
+| **AI 기반 배경음악** | 프롬프트에 맞는 배경음악 자동 삽입 | MusicGen |
+| **자동 자막 생성** | 편집된 영상에 자동으로 자막 삽입 | Whisper |
 
 
-## 커밋 컨벤션
+## 4. 시스템 아키텍처
+### 이미지 넣기
 
-| 커밋 유형 | 의미 |
-| --- | --- |
-| 기능 |  |
-| `feat` | 새로운 기능 추가 |
-| `fix` | 버그 수정 |
-| `design` | CSS 등 사용자 UI/UX 디자인 변경 |
-| 개선 |  |
-| `refactor` | 코드 리팩토링 (코드 가독성 향상 관련 → 불필요한 코드 제거, 컴포넌트, 함수, 클래스 분리 관련) |
-| `comment` | 필요한 주석 추가 및 변경 |
-| `style` | 코드 포맷팅(들여쓰기, 세미콜론 등), 코드 수정이 없는 경우 |
-| 기타 |  |
-| `docs` | 문서 수정 (Readme.md, 문서 등) |
-| `chore` | 프로젝트 설정 파일 수정 (.gitignore, 패키지 매니저 등) |
-| `remove` | 파일/폴더 삭제 |
-| `rename` | 파일/폴더명 수정, 파일/폴더 옮기는 작업만인 경우 |
-| `merge`  | 병합 |
-| 유지보수 |  |
-| `test` | 테스트 코드, 리팩토링 테스트 코드 추가 |
-| `build`  | 빌드 시스템 수정 및 외부 종속성 변경 (빌드 스크립트, 라이브러리 등) |
-| `ci`  | CI 설정 파일 수정 |
-| `pref`  | 성능 개선 |
+## 5. 서비스 화면
 
+### 로그인
+| <img src="docs/screenshots/임대인_홈화면.gif" width="200"> |
+|:---:|
+| 로그인 |
 
-## 코드 컨벤션
+- JWT 기반 인증 시스템 구현
+- 구글 OAuth를 활용한 회원가입 지원
 
-##### [BE Code Convention](https://eroul-ri.tistory.com/26)
+--- 
 
-##### 🔤 문자열을 처리할 때는 쌍따옴표(")를 사용하도록 합니다.
+### 영상 편집 서비스
 
-##### 🔚 문장이 종료될 때는 세미콜론(;)을 붙여줍니다.
+### 1. 영상 모자이크 처리
+| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> | <img src="docs/screenshots/임대인_문의.gif" width="200"> |
+|:---:|:---:|
+| 모자이크 처리 | 이미지 추가 |
 
-##### 🐫 함수명, 변수명은 카멜케이스(camelCase)로 작성합니다.
+- AI 기반 자동 모자이크 처리
+- 이미지 추가로 제외할 인물 선택
 
-##### ☝ 가독성을 위해 한 줄에 하나의 문장만 작성합니다.
+### 2. 영상 자막 생성
+| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> |
+|:---:|
+| 한국어 자막 추가 |
 
-##### 📝 주석은 설명하려는 구문에 맞춰 들여쓰기 합니다.
+- AI 기반 한국어 자막 생성
 
-```java
-// Good
-function someFunction() {
-  ...
+### 3. 영상 배경 음악 생성
+| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> | <img src="docs/screenshots/임대인_문의.gif" width="200"> |
+|:---:|:---:|
+| 자동 생성 | 프롬프트 입력 생성 |
 
-  // statement에 관한 주석
-  statements;
-}
+- AI 기반 배경 음악 제작
+- 영상에 어울리는 음악을 자동 선정해 삽입
+- 프롬프트 입력으로 특정 음악 요구 가능
 
-```
+### 4. 영상 편집 알림
+| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> |
+|:---:|
+| 푸쉬 알림 |
 
-##### ➕ 연산자 사이에는 공백을 추가하여 가독성을 높입니다.
-```
-a+b+c+d // bad
-a + b + c + d // good
-```
-##### 📌 콤마 다음에 값이 올 경우 공백을 추가하여 가독성을 높입니다.
-```
-var arr = [1,2,3,4]; // bad
-var arr = [1, 2, 3, 4]; // good
-```
+- 영상 편집 비동기 처리
+- 영상 편집 종료 시 fcm을 활용한 푸쉬 알림 전송
 
-##### 🔠 생성자 함수명의 맨 앞글자는 대문자로 합니다.
-```
-function Person() {}
-```
+--- 
+
+### 유튜브 쇼츠 업로드
+| <img src="docs/screenshots/임대인_홈화면.gif" width="200"> |
+|:---:|
+| 유튜브 쇼츠 업로드 |
+
+- 제목, 설명, 태그 입력 후 업로드
+
+--- 
+
+### 공유 방 서비스
+
+### 공유 방 관리
+| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> | <img src="docs/screenshots/임대인_계약코드생성.gif" width="200"> |
+|:---:|:---:|
+| 생성 | 입장 |
+
+- 영상 업로드 할 공유 방 생성 / 입장장
+
+### 공유 방 관리
+| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> |
+|:---:|
+| 초대 |
+
+- 
+
+### 공유 방 관리
+| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> |
+|:---:|
+| 영상 업로드 |
+
+- 
+
+### 공유 방 관리
+| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> | <img src="docs/screenshots/임대인_계약코드생성.gif" width="200"> |
+|:---:|:---:|
+| 조회 | 검색 |
+
+- 
+
+## 6. 개발 팀 소개
+
+---
+
+| <img src="https://avatars.githubusercontent.com/black4758" width="200"> | <img src="https://avatars.githubusercontent.com/HuiSeopKwak" width="200"> | <img src="https://avatars.githubusercontent.com/ssm-kim" width="200"> | <img src="https://avatars.githubusercontent.com/YDaewon" width="200">  | <img src="https://avatars.githubusercontent.com/chjw956" width="200">  | <img src="https://avatars.githubusercontent.com/pickup3415" width="200">
+|---------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 우성윤 ([@black4758](https://github.com/black4758)) | 곽희섭 ([@HuiSeopKwak](https://github.com/HuiSeopKwak)) | 김성민 ([@ssm-kim](https://github.com/ssm-kim)) | 양대원 ([@YDaewon](https://github.com/YDaewon)) | 최지원 ([@chjw956](https://github.com/chjw956)) | 박준현 ([@pickup3415](https://github.com/pickup3415)) | 
+| Leader / Back End(AI) | Back End(AI) | Back End | Back End |  Infra | Front End |
+
+<br />
+<div id="산출물"></div>
+
+## 📝 산출물
+
+---
+
+### 1. [기능 명세서](https://fluorescent-backpack-f2b.notion.site/1dc258eb697a807ea796e457461fd17e)
+
+### 2. [와이어 프레임](https://www.figma.com/proto/Ex0tN8WhSVTxQyH5nxFyWy/D108_%EC%9E%90%EC%9C%A8?node-id=0-1&t=ioEh0D9SjDtngMMl-1)
+
+### 3. [API 명세서](https://fluorescent-backpack-f2b.notion.site/API-1f8258eb697a80d2831bc1cd9b461d13)
+
+### 4. [ERD](/docs/readme/erd.png)
+
+### 5. [포팅매뉴얼](/exec/포팅메뉴얼/)
+
+### 6. [최종발표](/exec/월간ZIP_발표.pdf)

@@ -46,12 +46,6 @@ public class RoomDetailService {
     }
 
     @Transactional
-    public void updateRoom(Room room, String title, String password, String context) {
-        room.updateRoom(title, password, context);// 엔티티끌어쓰고
-        roomRepository.save(room);
-    }
-
-    @Transactional
     public void deleteRoom(Room room) {
         roomRepository.delete(room);
     }
@@ -67,7 +61,7 @@ public class RoomDetailService {
     }
     
 
-    public RoomResponse mapToResponse(Room room, int memberCount) {
-        return RoomResponse.from(room, memberCount);
+    public RoomResponse mapToResponse(Long memberId, Room room, int memberCount) {
+        return RoomResponse.from(memberId, room, memberCount);
     }
 }

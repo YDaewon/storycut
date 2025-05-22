@@ -4,6 +4,7 @@ import com.storycut.domain.auth.model.CustomUserDetails;
 import com.storycut.domain.room.dto.request.RoomCreateRequest;
 import com.storycut.domain.room.dto.request.RoomInviteRequest;
 import com.storycut.domain.room.dto.request.RoomUpdateRequest;
+import com.storycut.domain.room.dto.request.UpdateThumbnailRequest;
 import com.storycut.domain.room.dto.response.RoomMemberResponse;
 import com.storycut.domain.room.dto.response.RoomResponse;
 import com.storycut.domain.room.service.RoomService;
@@ -48,9 +49,9 @@ public class RoomController implements RoomAPI {
 
     @Override
     public ResponseEntity<BaseResponse<RoomResponse>> updateThumbnail(
-        CustomUserDetails authUser, Long roomId, String thumbnail) {
+        CustomUserDetails authUser, Long roomId, UpdateThumbnailRequest dto) {
 
-        RoomResponse response = roomService.updateThumbnail(authUser.getMemberId(), roomId, thumbnail);
+        RoomResponse response = roomService.updateThumbnail(authUser.getMemberId(), roomId, dto.thumbnail());
         return ResponseEntity.ok(new BaseResponse<> (response));
     }
 
@@ -93,9 +94,9 @@ public class RoomController implements RoomAPI {
 
     @Override
     public ResponseEntity<BaseResponse<RoomResponse>> getRoomDetail(
-            Long roomId) {
+        CustomUserDetails authUser, Long roomId) {
         
-        RoomResponse response = roomService.getRoomDetail(roomId);
+        RoomResponse response = roomService.getRoomDetail(authUser.getMemberId(), roomId);
         return ResponseEntity.ok(new BaseResponse<> (response));
     }
 

@@ -69,4 +69,8 @@ public class Room extends BaseEntity {
     public void updateHostId(Long newHostId) {
         this.hostId = newHostId;
     }
+
+    public boolean isHost(Long memberId) {
+        return this.hostId.equals(memberId);
+    }
 }

@@ -41,7 +41,7 @@ public class RoomFacadeService implements RoomService {
         roomMemberService.addMember(memberId, savedRoom);
         
         // 응답 생성 (참여자 수는 1, 방장만 존재)
-        return roomDetailService.mapToResponse(savedRoom, 1);
+        return roomDetailService.mapToResponse(memberId, savedRoom, 1);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class RoomFacadeService implements RoomService {
         return rooms.stream()
                 .map(room -> {
                     int memberCount = roomMemberService.countMembersByRoomId(room.getId());
-                    return roomDetailService.mapToResponse(room, memberCount);
+                    return roomDetailService.mapToResponse(memberId, room, memberCount);
                 })
                 .toList();
     }
@@ -71,7 +71,7 @@ public class RoomFacadeService implements RoomService {
         int memberCount = roomMemberService.countMembersByRoomId(roomId);
 
         // 응답 생성
-        return roomDetailService.mapToResponse(room, memberCount);
+        return roomDetailService.mapToResponse(memberId, room, memberCount);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class RoomFacadeService implements RoomService {
         int memberCount = roomMemberService.countMembersByRoomId(roomId);
 
         // 응답 생성
-        return roomDetailService.mapToResponse(room, memberCount);
+        return roomDetailService.mapToResponse(memberId, room, memberCount);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class RoomFacadeService implements RoomService {
         int memberCount = roomMemberService.countMembersByRoomId(roomId);
 
         // 응답 생성
-        return roomDetailService.mapToResponse(room, memberCount);
+        return roomDetailService.mapToResponse(memberId, room, memberCount);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class RoomFacadeService implements RoomService {
     }
 
     @Override
-    public RoomResponse getRoomDetail(Long roomId) {
+    public RoomResponse getRoomDetail(Long memberId, Long roomId) {
         // 공유방 조회
         Room room = roomDetailService.findRoomById(roomId);
         
@@ -195,7 +195,7 @@ public class RoomFacadeService implements RoomService {
         int memberCount = roomMemberService.countMembersByRoomId(roomId);
         
         // 응답 생성
-        return roomDetailService.mapToResponse(room, memberCount);
+        return roomDetailService.mapToResponse(memberId, room, memberCount);
     }
 
     @Override
