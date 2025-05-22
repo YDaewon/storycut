@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "541976217504",
+    "project_id": "storycut-33c00",
+    "storage_bucket": "storycut-33c00.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541976217504:android:a56e5db0ceba7a3375c6c5",
+        "android_client_info": {
+          "package_name": "com.ssafy.storycut"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxmr1IfSnxYPZhQRzsDx8CIklUEBQogl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
