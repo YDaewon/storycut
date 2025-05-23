@@ -70,7 +70,7 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 ## 5. 서비스 화면
 
 ### 로그인
-| <img src="docs/screenshots/임대인_홈화면.gif" width="200"> |
+| <img src="docs/readme/gif/login.gif" width="200"> |
 |:---:|
 | 로그인 |
 
@@ -81,23 +81,31 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 
 ### 영상 편집 서비스
 
+### 1. 프롬프트 기반 컷 편집집
+| <img src="docs/readme/gif/prompt.gif" width="200"> |
+|:---:|
+| 프롬프트 기반 컷 편집 |
+
+- 프롬프트에 걸맞게 컷 편집
+
+
 ### 1. 영상 모자이크 처리
-| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> | <img src="docs/screenshots/임대인_문의.gif" width="200"> |
-|:---:|:---:|
-| 모자이크 처리 | 이미지 추가 |
+| <img src="docs/readme/gif/moza.gif" width="200"> |<img src="docs/readme/gif/before.gif" width="200"> |<img src="docs/readme/gif/after.gif" width="200"> |
+|:---:|:---: |:---: |
+| 모자이크 처리/ 이미지 | Before | After( 모자이크 / 자막) |
 
 - AI 기반 자동 모자이크 처리
 - 이미지 추가로 제외할 인물 선택
 
 ### 2. 영상 자막 생성
-| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> |
+| <img src="docs/readme/gif/subtitle.gif" width="200"> |
 |:---:|
 | 한국어 자막 추가 |
 
 - AI 기반 한국어 자막 생성
 
 ### 3. 영상 배경 음악 생성
-| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> | <img src="docs/screenshots/임대인_문의.gif" width="200"> |
+| <img src="docs/readme/gif/bgm.gif" width="200"> | <img src="docs/readme/gif/prom_sub.gif" width="200"> |
 |:---:|:---:|
 | 자동 생성 | 프롬프트 입력 생성 |
 
@@ -106,7 +114,7 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 - 프롬프트 입력으로 특정 음악 요구 가능
 
 ### 4. 영상 편집 알림
-| <img src="docs/screenshots/임대인_임차인%20관리.gif" width="200"> |
+| <img src="docs/readme/gif/push.gif" width="200"> |
 |:---:|
 | 푸쉬 알림 |
 
@@ -116,9 +124,9 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 --- 
 
 ### 유튜브 쇼츠 업로드
-| <img src="docs/screenshots/임대인_홈화면.gif" width="200"> |
-|:---:|
-| 유튜브 쇼츠 업로드 |
+| <img src="docs/readme/gif/auth.gif" width="200"> | <img src="docs/readme/gif/y_upload.gif" width="200"> |
+|:---:|:---:|
+| 업로드 권환 획득득 | 유튜브 쇼츠 업로드 |
 
 - 제목, 설명, 태그 입력 후 업로드
 
@@ -127,32 +135,24 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 ### 공유 방 서비스
 
 ### 공유 방 관리
-| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> | <img src="docs/screenshots/임대인_계약코드생성.gif" width="200"> |
+| <img src="docs/readme/gif/create_room.gif" width="200"> | <img src="docs/readme/gif/enter.gif" width="200"> |
 |:---:|:---:|
-| 생성 | 입장 |
+| 생성 | 초대 코드로 입장 |
 
-- 영상 업로드 할 공유 방 생성 / 입장장
-
-### 공유 방 관리
-| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> |
-|:---:|
-| 초대 |
-
-- 
 
 ### 공유 방 관리
-| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> |
+| <img src="docs/readme//gif/upload.gif" width="200"> |
 |:---:|
 | 영상 업로드 |
 
 - 
 
 ### 공유 방 관리
-| <img src="docs/screenshots/임대인_세대관리.gif" width="200"> | <img src="docs/screenshots/임대인_계약코드생성.gif" width="200"> |
+| <img src="docs/readme/gif/read.gif" width="200"> | <img src="docs/readme/gif/search.gif" width="200"> |
 |:---:|:---:|
 | 조회 | 검색 |
 
-- 
+
 
 ## 6. 개발 팀 소개
 
