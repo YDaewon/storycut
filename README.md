@@ -90,7 +90,7 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 
 
 ### 1. 영상 모자이크 처리
-| <img src="docs/readme/gif/moza.gif" width="200"> |<img src="docs/readme/gif/before.gif" width="200"> |<img src="docs/readme/gif/after.gif" width="200"> |
+| <img src="docs/readme/gif/moza.gif" width="200"> |<img src="docs/readme/gif/Before.gif" width="200"> |<img src="docs/readme/gif/after.gif" width="200"> |
 |:---:|:---: |:---: |
 | 모자이크 처리/ 이미지 | Before | After( 모자이크 / 자막) |
 
@@ -145,7 +145,6 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 |:---:|
 | 영상 업로드 |
 
-- 
 
 ### 공유 방 관리
 | <img src="docs/readme/gif/read.gif" width="200"> | <img src="docs/readme/gif/search.gif" width="200"> |
