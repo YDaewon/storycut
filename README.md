@@ -141,7 +141,7 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 
 
 ### 공유 방 관리
-| <img src="docs/readme//gif/upload.gif" width="200"> |
+| <img src="docs/readme/gif/upload.gif" width="200"> |
 |:---:|
 | 영상 업로드 |
 
