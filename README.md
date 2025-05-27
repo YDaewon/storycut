@@ -65,7 +65,7 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 
 
 ## 4. 시스템 아키텍처
-### 이미지 넣기
+![Architecture](docs/readme/architecture.png)
 
 ## 5. 서비스 화면
 
@@ -177,6 +177,6 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 
 ### 4. [ERD](/docs/readme/erd.png)
 
-### 5. [포팅매뉴얼](/exec/포팅메뉴얼/)
+### 5. [포팅매뉴얼](/exec/프로젝트_빌드_및_배포_문서.pdf)
 
-### 6. [최종발표](/exec/월간ZIP_발표.pdf)
+### 6. [최종발표](/exec/최종발표자료.pdf)
