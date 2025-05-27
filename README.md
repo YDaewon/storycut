@@ -38,7 +38,8 @@ StoryCut과 함께 AI 기반의 스마트한 영상 편집을 경험해보세요
 
 ### **Backend**
 
-<img src="https://img.shields.io/badge/Java 17-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot 3.4.4-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> <img src="https://img.shields.io/badge/FastAPI 0.95.2-009688?style=for-the-badge&logo=FastAPI&logoColor=white"> <img src="https://img.shields.io/badge/Python 3.8-3776AB?style=for-the-badge&logo=Python&logoColor=white">
+<img src="https://img.shields.io/badge/Java 17-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot%203.4.4-6DB33F?style=for-the-badge&logo=Spring%20Boot&logoColor=white">
+ <img src="https://img.shields.io/badge/FastAPI 0.95.2-009688?style=for-the-badge&logo=FastAPI&logoColor=white"> <img src="https://img.shields.io/badge/Python 3.8-3776AB?style=for-the-badge&logo=Python&logoColor=white">
 
 ### **Database**
 
